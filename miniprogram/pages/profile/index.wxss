@@ -1,0 +1,96 @@
+/* pages/profile/index.wxss */
+page {
+  background-color: var(--page-bg);
+}
+
+.container {
+  padding-bottom: 24rpx;
+}
+
+/* 顶部头像资料栏 */
+.profile-header {
+  background: linear-gradient(180deg, var(--primary-color) 0%, #4096ff 100%);
+  display: flex;
+  align-items: center;
+  padding: 80rpx 40rpx;
+  color: #fff;
+}
+
+.avatar-wrapper {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  line-height: 1;
+}
+.avatar-wrapper::after {
+    border: none;
+}
+
+.avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  border: 4rpx solid var(--primary-bg-light);
+  margin-right: 24rpx;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nickname {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.user-title {
+  font-size: 24rpx;
+  color: #E8F3FF;
+  opacity: 0.8;
+}
+
+/* 功能列表分区 */
+.menu-card {
+  background-color: #fff;
+  border-radius: var(--card-border-radius);
+  margin: -40rpx 24rpx 0;
+  padding: 16rpx 0;
+  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 1;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 32rpx 24rpx;
+}
+
+.menu-item + .menu-item {
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.menu-icon {
+  width: 44rpx;
+  height: 44rpx;
+  margin-right: 24rpx;
+}
+
+.menu-text {
+  flex: 1;
+  font-size: 30rpx;
+  color: var(--text-black);
+}
+
+.merchant-login {
+  color: var(--primary-color);
+}
+
+.arrow-icon {
+  width: 28rpx;
+  height: 28rpx;
+}

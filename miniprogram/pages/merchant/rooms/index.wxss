@@ -1,0 +1,146 @@
+/* pages/merchant/rooms/index.wxss */
+page {
+  background-color: var(--page-bg);
+}
+
+.container {
+  padding: 24rpx;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24rpx;
+}
+
+.add-room-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12rpx 24rpx;
+  border-radius: var(--card-border-radius);
+  font-size: 28rpx;
+}
+
+.room-list {
+  /* 与用户端首页样式一致 */
+}
+
+.room-card {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: var(--card-border-radius);
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+.room-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 8rpx;
+  margin-right: 24rpx;
+}
+
+.room-details {
+  flex: 1;
+}
+
+.room-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.room-status.idle {
+  color: #00B42A;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+}
+
+.action-btn.lock {
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 24rpx;
+  padding: 10rpx 20rpx;
+  border-radius: 20rpx;
+  border: none;
+}
+
+.icon-group {
+  display: flex;
+  margin-left: 20rpx;
+}
+
+.icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-left: 20rpx;
+}
+
+/* Modal样式 */
+.modal-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 998;
+}
+
+.modal-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  background-color: white;
+  border-radius: var(--card-border-radius);
+  z-index: 999;
+}
+
+.modal-title {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 20rpx;
+  text-align: center;
+  font-size: 32rpx;
+  border-top-left-radius: var(--card-border-radius);
+  border-top-right-radius: var(--card-border-radius);
+}
+
+.modal-content {
+  padding: 40rpx;
+}
+
+.modal-input {
+  border: 1px solid #eee;
+  border-radius: 8rpx;
+  padding: 15rpx;
+  margin-bottom: 20rpx;
+}
+
+.modal-footer {
+  display: flex;
+}
+
+.modal-footer button {
+  flex: 1;
+  border-radius: 0;
+  border-top: 1px solid #eee;
+}
+.modal-footer button::after {
+    border: none;
+}
+
+.btn-cancel {
+  color: var(--text-gray);
+  border-bottom-left-radius: var(--card-border-radius);
+}
+
+.btn-confirm {
+  color: var(--primary-color);
+  border-left: 1px solid #eee;
+  border-bottom-right-radius: var(--card-border-radius);
+}

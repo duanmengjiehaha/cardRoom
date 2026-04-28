@@ -1,0 +1,97 @@
+/* pages/merchant/orders/index.wxss */
+page {
+  background-color: var(--page-bg);
+}
+
+.container {
+  padding-bottom: 24rpx;
+}
+
+/* 顶部标签栏 */
+.tabs-container {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-around;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  z-index: 10;
+}
+
+.tab-item {
+  padding: 24rpx 0;
+  font-size: 28rpx;
+  color: var(--text-gray);
+  border-bottom: 2px solid transparent;
+}
+
+.tab-item.active {
+  color: var(--primary-color);
+  font-weight: bold;
+  border-bottom-color: var(--primary-color);
+}
+
+/* 订单列表 */
+.orders-list {
+  padding: 24rpx;
+}
+
+.order-card {
+  background-color: #fff;
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-body {
+  font-size: 26rpx;
+  color: var(--text-gray);
+}
+
+.detail-line {
+  line-height: 44rpx;
+}
+
+.card-footer {
+  align-self: flex-end;
+}
+
+.verify-btn {
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 28rpx;
+  padding: 15rpx 30rpx;
+  border-radius: var(--card-border-radius);
+  border: none;
+}
+.verify-btn::after {
+    border: none;
+}
+
+.status-text {
+  color: var(--text-gray);
+  font-size: 28rpx;
+}
+
+/* 空状态 */
+.empty-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 200rpx;
+}
+
+.empty-icon {
+  width: 180rpx;
+  height: 180rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: var(--text-gray);
+}

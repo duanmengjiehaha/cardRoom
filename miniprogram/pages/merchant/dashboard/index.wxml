@@ -1,0 +1,45 @@
+<!--pages/merchant/dashboard/index.wxml-->
+<view class="container">
+  <!-- 顶部导航栏占位，因为是自定义导航 -->
+  <view class="custom-nav">
+    <view class="nav-title">商家管理后台</view>
+    <view class="logout-btn" bindtap="logout">退出登录</view>
+  </view>
+
+  <!-- 数据统计 -->
+  <view class="stats-grid">
+    <view class="stat-item">
+      <view class="value">{{stats.total}}</view>
+      <view class="label">总桌数</view>
+    </view>
+    <view class="stat-item">
+      <view class="value">{{stats.idle}}</view>
+      <view class="label">空闲桌</view>
+    </view>
+    <view class="stat-item">
+      <view class="value">{{stats.booked}}</view>
+      <view class="label">已预约</view>
+    </view>
+    <view class="stat-item">
+      <view class="value">{{stats.orders}}</view>
+      <view class="label">今日订单</view>
+    </view>
+  </view>
+
+  <!-- 功能入口 -->
+  <view class="menu-grid">
+    <view class="menu-item" data-page="rooms" bindtap="navigateTo">
+      <image class="menu-icon" src="/images/icon_tables.png"/>
+      <view class="menu-label">桌位管理</view>
+    </view>
+    <view class="menu-item" data-page="orders" bindtap="navigateTo">
+      <image class="menu-icon" src="/images/icon_verify.png"/>
+      <view class="menu-label">预约订单核销</view>
+    </view>
+  </view>
+
+  <!-- 营业时间设置 -->
+  <view class="settings-entry">
+    店铺营业时间设置
+  </view>
+</view>

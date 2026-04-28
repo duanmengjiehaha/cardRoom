@@ -1,0 +1,38 @@
+{
+  "pages": [
+    "pages/welcome/index",
+    "pages/home/index",
+    "pages/profile/index",
+    "pages/booking/index",
+    "pages/orders/index",
+    "pages/history/index",
+    "pages/merchant/login/index",
+    "pages/merchant/home/index",
+    "pages/merchant/profile/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#409EFF",
+    "navigationBarTitleText": "乐闲阁棋牌订位",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#999999",
+    "selectedColor": "#409EFF",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

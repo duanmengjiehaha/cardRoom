@@ -1,0 +1,140 @@
+/* pages/booking/index.wxss */
+page {
+  background-color: #fff;
+}
+
+.container {
+  padding-bottom: 180rpx; /* 增加底部内边距，确保内容不被遮挡 */
+}
+
+/* 提醒栏 */
+.reminder-bar {
+  background-color: #FFF7E6;
+  color: #D48806;
+  font-size: 24rpx;
+  padding: 16rpx 24rpx;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* 基础信息栏 */
+.booking-info-bar {
+  background-color: var(--primary-bg-light);
+  padding: 24rpx;
+  font-size: 28rpx;
+  color: var(--text-black);
+}
+.info-line {
+    line-height: 40rpx;
+}
+
+/* 时段选择 */
+.time-slot-section {
+  padding: 24rpx;
+  background-color: #fff;
+  margin-top: 24rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 24rpx;
+}
+
+.time-slots-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20rpx;
+}
+
+.slot-box {
+  height: 60rpx;
+  border: 1px solid var(--primary-color);
+  border-radius: 8rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+  position: relative;
+}
+
+.slot-box.available {
+  background-color: #fff;
+  color: var(--text-black);
+}
+.slot-box.available:active {
+    background-color: #f0f0f0;
+}
+
+.slot-box.selected {
+  background-color: #00B42A;
+  color: #fff;
+  border-color: #00B42A;
+}
+
+.slot-box.occupied {
+  background-color: #F53F3F;
+  color: #fff;
+  border-color: #F53F3F;
+}
+
+.slot-box.past {
+  background-color: #f0f0f0;
+  color: #ccc;
+  border-color: #ddd;
+}
+
+.check-icon {
+  width: 28rpx;
+  height: 28rpx;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* 信息填写 */
+.form-section {
+  padding: 24rpx;
+  margin-top: 24rpx;
+  background-color: #fff;
+}
+
+.form-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: 24rpx 0;
+}
+
+.form-icon {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 24rpx;
+}
+
+.form-input {
+  flex: 1;
+  font-size: 30rpx;
+}
+
+/* 底部操作栏 - 强制可见样式 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  padding: 24rpx;
+  box-shadow: 0 -2rpx 10rpx rgba(0,0,0,0.05);
+  z-index: 999; /* 提高层级 */
+}
+
+.bottom-bar .button-primary {
+  background-color: #409EFF !important; /* 强制设置背景色 */
+  color: #ffffff !important; /* 强制设置文字颜色 */
+  display: block !important; /* 确保为块级元素 */
+  visibility: visible !important; /* 强制可见 */
+  opacity: 1 !important; /* 强制不透明 */
+}

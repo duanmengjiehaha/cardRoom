@@ -1,0 +1,76 @@
+/* pages/history/index.wxss */
+page {
+  background-color: var(--page-bg);
+}
+
+.container {
+  padding: 24rpx;
+}
+
+.history-card {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: var(--card-border-radius);
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.06);
+}
+
+.shop-icon {
+  width: 80rpx;
+  height: 80rpx;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.shop-info {
+  flex: 1;
+}
+
+.shop-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: var(--text-black);
+  margin-bottom: 8rpx;
+}
+
+.shop-detail {
+  font-size: 24rpx;
+  color: var(--text-gray);
+  line-height: 36rpx;
+}
+
+.rebook-btn {
+  font-size: 24rpx;
+  color: var(--primary-color);
+  background-color: #fff;
+  border: 1px solid var(--primary-color) !important;
+  border-radius: 30rpx;
+  padding: 8rpx 24rpx;
+  margin: 0;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.rebook-btn::after {
+    border: none;
+}
+
+/* 空状态 */
+.empty-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 200rpx;
+}
+
+.empty-icon {
+  width: 180rpx;
+  height: 180rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: var(--text-gray);
+}

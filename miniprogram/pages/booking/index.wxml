@@ -1,0 +1,47 @@
+<!--pages/booking/index.wxml-->
+<view class="container">
+  <!-- 顶部强醒目提醒栏 -->
+  <view class="reminder-bar">
+    <text>预约成功请30分钟内到店核销，超时系统自动取消房间，释放占用时段</text>
+  </view>
+
+  <!-- 预约基础信息栏 -->
+  <view class="booking-info-bar">
+    <view class="info-line">预约商家：{{shopName}}</view>
+    <view class="info-line">预约桌号：{{roomName}}</view>
+  </view>
+
+  <!-- 时段选择核心区 -->
+  <view class="time-slot-section">
+    <view class="section-title">选择预约时段（最低预约半小时）</view>
+    <view class="time-slots-grid">
+      <view 
+        wx:for="{{timeSlots}}" 
+        wx:key="time" 
+        class="slot-box {{item.status}}" 
+        data-index="{{index}}"
+        bindtap="selectSlot"
+      >
+        {{item.time}}
+        <image wx:if="{{item.status === 'selected'}}" class="check-icon" src="/images/icon_check_white.png"/>
+      </view>
+    </view>
+  </view>
+
+  <!-- 信息填写模块 -->
+  <view class="form-section">
+    <view class="form-item">
+      <image class="form-icon" src="/images/icon_user.png"/>
+      <input class="form-input" placeholder="请输入预约真实姓名" model:value="{{name}}"/>
+    </view>
+    <view class="form-item">
+      <image class="form-icon" src="/images/icon_phone.png"/>
+      <input class="form-input" type="number" placeholder="请输入有效手机号" model:value="{{phone}}"/>
+    </view>
+  </view>
+
+  <!-- 底部固定操作栏 -->
+  <view class="bottom-bar">
+    <view class="button-primary" bindtap="submitBooking">确认提交预约</view>
+  </view>
+</view>

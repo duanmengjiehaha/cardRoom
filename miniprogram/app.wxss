@@ -1,0 +1,38 @@
+/**app.wxss**/
+page {
+  background-color: #F5F7FA; /* 页面底色 */
+  color: #333333; /* 正文黑 */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+:root {
+  --primary-color: #409EFF; /* 品牌深蓝 */
+  --primary-bg-light: #ECF5FF; /* 浅蓝背景 */
+  --page-bg: #F5F7FA;
+  --danger-color: #F53F3F; /* 占用警示红 */
+  --text-gray: #999999; /* 常规灰字 */
+  --text-black: #333333; /* 正文黑 */
+  --card-border-radius: 12rpx;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
+  margin: 24rpx;
+  padding: 24rpx;
+}
+
+.button-primary {
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: var(--card-border-radius);
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.button-primary:active {
+    background-color: #4096ff;
+}

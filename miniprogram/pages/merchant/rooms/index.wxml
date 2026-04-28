@@ -1,0 +1,38 @@
+<!--pages/merchant/rooms/index.wxml-->
+<view class="container">
+  <view class="header">
+    <button class="add-room-btn" bindtap="showAddRoomModal">+ 新增桌位</button>
+  </view>
+
+  <view class="room-list">
+    <view class="room-card" wx:for="{{roomList}}" wx:key="id">
+      <image class="room-image" src="{{item.image}}" mode="aspectFill"/>
+      <view class="room-details">
+        <view class="room-name">{{item.name}}</view>
+        <view class="room-status {{item.status === '空闲' ? 'idle' : ''}}">{{item.status}}</view>
+      </view>
+      <view class="actions">
+        <button class="action-btn lock" bindtap="lockRoom">线下锁定</button>
+        <view class="icon-group">
+          <image class="icon" src="/images/icon_edit.png" bindtap="editRoom"/>
+          <image wx:if="{{item.status === '空闲'}}" class="icon" src="/images/icon_delete.png" bindtap="deleteRoom"/>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 新增/编辑桌位弹窗 -->
+  <view class="modal-mask" wx:if="{{showAddModal}}" bindtap="hideAddRoomModal"></view>
+  <view class="modal-dialog" wx:if="{{showAddModal}}">
+    <view class="modal-title">新增桌位</view>
+    <view class="modal-content">
+        <input class="modal-input" placeholder="自定义房间名称/桌号" model:value="{{newRoomName}}"/>
+        <input class="modal-input" placeholder="参考展示单价" model:value="{{newRoomPrice}}"/>
+        <!-- 图片上传功能暂未实现 -->
+    </view>
+    <view class="modal-footer">
+      <button class="btn-cancel" bindtap="hideAddRoomModal">取消</button>
+      <button class="btn-confirm" bindtap="addRoom">确认</button>
+    </view>
+  </view>
+</view>

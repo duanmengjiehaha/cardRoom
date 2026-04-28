@@ -1,0 +1,75 @@
+/* pages/welcome/index.wxss */
+page {
+  background-color: #fff;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.brand-logo {
+  width: 150rpx;
+  height: 150rpx;
+  margin-bottom: 20rpx;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: var(--primary-color);
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: var(--text-gray);
+  margin-bottom: 80rpx;
+}
+
+.card-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 85%;
+  height: 120rpx;
+  border-radius: var(--card-border-radius);
+  margin-bottom: 40rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.08);
+}
+
+.card-button .icon {
+  width: 50rpx;
+  height: 50rpx;
+  margin-right: 20rpx;
+}
+
+.card-button .text {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.card-button.user {
+  background-color: #fff;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+}
+
+.card-button.merchant {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.card-button.merchant .text {
+  color: #FFFFFF !important; /* 强制设为白色 */
+}
+
+.footer {
+  position: absolute;
+  bottom: 40rpx;
+  font-size: 24rpx;
+  color: #ccc;
+}

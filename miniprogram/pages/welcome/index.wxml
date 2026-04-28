@@ -1,0 +1,18 @@
+<!--pages/welcome/index.wxml-->
+<view class="container">
+  <image class="brand-logo" src="/images/logo.png"/>
+  <view class="title">乐闲阁棋牌订位</view>
+  <view class="subtitle">请选择您的身份进入对应系统</view>
+
+  <view class="card-button user" bindtap="handleUser">
+    <image class="icon" src="/images/icon_user_card.png"/>
+    <view class="text">我是个人用户，扫码预约打牌</view>
+  </view>
+
+  <view class="card-button merchant" bindtap="handleMerchant">
+    <image class="icon" src="/images/icon_merchant_card.png"/>
+    <view class="text">我是商家，登录后台管理店铺</view>
+  </view>
+
+  <view class="footer">© 2024 乐闲阁</view>
+</view>

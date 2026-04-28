@@ -1,0 +1,25 @@
+<!--pages/home/index.wxml-->
+<view class="container">
+  <!-- 顶部商家信息卡片 -->
+  <view class="shop-info-card">
+    <view class="shop-name">{{shopInfo.name}}</view>
+    <view class="shop-detail">营业时间：{{shopInfo.hours}}</view>
+    <view class="shop-detail">{{shopInfo.address}}</view>
+  </view>
+
+  <!-- 分区标题栏 -->
+  <view class="section-title">可预约房间列表</view>
+
+  <!-- 房间列表 -->
+  <view class="room-list">
+    <view class="room-card" wx:for="{{roomList}}" wx:key="id">
+      <image class="room-image" src="{{item.image}}" mode="aspectFill"/>
+      <view class="room-details">
+        <view class="room-name">{{item.name}}</view>
+        <view class="room-price">{{item.price}}</view>
+      </view>
+      <!-- 使用 button 标签并添加重置样式，确保稳定显示 -->
+      <button class="booking-button" data-id="{{item.id}}" bindtap="navigateToBooking">立即预约</button>
+    </view>
+  </view>
+</view>

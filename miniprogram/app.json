@@ -8,31 +8,39 @@
     "pages/history/index",
     "pages/merchant/login/index",
     "pages/merchant/home/index",
-    "pages/merchant/profile/index"
+    "pages/merchant/rooms/index",
+    "pages/merchant/lock-create/index",
+    "pages/merchant/room-create/index",
+    "pages/merchant/room-edit/index",
+    "pages/merchant/orders/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#409EFF",
-    "navigationBarTitleText": "乐闲阁棋牌订位",
+    "navigationBarBackgroundColor": "#4A90E2",
+    "navigationBarTitleText": "\u68cb\u724c\u623f\u9884\u7ea6",
     "navigationBarTextStyle": "white"
   },
   "tabBar": {
-    "custom": true,
-    "color": "#999999",
-    "selectedColor": "#409EFF",
+    "color": "#8b9bb0",
+    "selectedColor": "#4A90E2",
     "backgroundColor": "#ffffff",
-    "borderStyle": "black",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/home/index",
-        "text": "首页"
+        "text": "\u9996\u9875",
+        "iconPath": "images/icons/home.png",
+        "selectedIconPath": "images/icons/home-active.png"
       },
       {
         "pagePath": "pages/profile/index",
-        "text": "我的"
+        "text": "\u6211\u7684",
+        "iconPath": "images/icons/usercenter.png",
+        "selectedIconPath": "images/icons/usercenter-active.png"
       }
     ]
   },
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
 }

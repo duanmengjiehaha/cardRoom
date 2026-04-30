@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "\u7ebf\u4e0b\u9501\u53f0",
+  "usingComponents": {
+    "van-button": "/miniprogram_npm/@vant/weapp/button/index",
+    "van-cell-group": "/miniprogram_npm/@vant/weapp/cell-group/index",
+    "van-field": "/miniprogram_npm/@vant/weapp/field/index",
+    "van-tag": "/miniprogram_npm/@vant/weapp/tag/index"
+  }
+}

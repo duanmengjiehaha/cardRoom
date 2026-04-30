@@ -1,19 +1,84 @@
-<!--pages/merchant/home/index.wxml-->
-<view class="container">
-  <view class="shop-info-card">
-    <view class="shop-name">{{shopInfo.name}}</view>
-    <view class="shop-detail">营业时间：{{shopInfo.hours}}</view>
-    <view class="shop-detail">{{shopInfo.address}}</view>
-  </view>
-  <view class="section-title">可操作房间列表</view>
-  <view class="room-list">
-    <view class="room-card" wx:for="{{roomList}}" wx:key="id">
-      <image class="room-image" src="{{item.image}}" mode="aspectFill"/>
-      <view class="room-details">
-        <view class="room-name">{{item.name}}</view>
-        <view class="room-price">{{item.price}}</view>
-      </view>
-      <button class="booking-button" data-id="{{item.id}}" bindtap="lockRoom">线下锁定</button>
+<view class="page-shell">
+  <view class="shop-summary card" wx:if="{{shopInfo}}">
+    <view class="shop-summary-head">
+      <view class="shop-summary-title">{{shopInfo.name}}</view>
+      <view class="shop-status active">{{texts.businessOpen}}</view>
+    </view>
+    <view class="shop-summary-row">
+      <van-icon name="clock-o" size="28rpx" color="#8ea0b3" />
+      <view class="shop-summary-text">{{texts.businessHoursPrefix}}{{shopInfo.hours.open}} - {{shopInfo.hours.close}}</view>
+    </view>
+    <view class="shop-summary-row">
+      <van-icon name="location-o" size="28rpx" color="#8ea0b3" />
+      <view class="shop-summary-text">{{texts.addressPrefix}}{{shopInfo.address}}</view>
     </view>
   </view>
+
+  <view class="quick card">
+    <view class="quick-actions">
+      <button class="quick-button add-button" data-url="/pages/merchant/room-create/index" bindtap="navigateTo">{{texts.addRoom}}</button>
+      <button class="quick-button order-button" data-url="/pages/merchant/orders/index" bindtap="navigateTo">{{texts.bookingOrders}}</button>
+    </view>
+
+    <view class="room-list">
+      <view class="room-item" wx:for="{{roomList}}" wx:key="id">
+        <view class="room-tap">
+          <image class="room-thumb" src="{{item.image || '/images/default-goods-image.png'}}" mode="aspectFill"></image>
+          <view class="room-info">
+            <view class="room-head">
+              <view class="room-name">{{item.displayName}}</view>
+              <van-tag round type="{{item.statusTag === 'danger' ? 'danger' : item.statusTag === 'success' ? 'success' : 'warning'}}">{{item.status}}</van-tag>
+            </view>
+            <view class="room-price">参考价：{{item.priceLabel}}</view>
+          </view>
+        </view>
+        <view class="room-actions">
+          <button class="room-action action-primary" data-id="{{item.id}}" bindtap="openLockModal">{{texts.offlineLock}}</button>
+          <button class="room-action action-secondary" data-id="{{item.id}}" bindtap="openRoomEdit">{{texts.editRoom}}</button>
+          <button wx:if="{{item.canDelete}}" class="room-action action-danger" data-id="{{item.id}}" bindtap="deleteRoom">{{texts.deleteRoom}}</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <van-popup show="{{showLockModal}}" position="bottom" round custom-style="min-height: 62vh;" bind:close="hideLockModal">
+    <view class="popup-shell">
+      <view class="popup-head">
+        <view class="popup-title">{{texts.popupTitle}}</view>
+        <view class="popup-subtitle">{{lockRoomName}}</view>
+      </view>
+      <van-cell-group border="{{false}}" custom-class="popup-group">
+        <van-field
+          label="{{texts.customerLabel}}"
+          value="{{lockForm.customerName}}"
+          data-field="customerName"
+          placeholder="{{texts.customerPlaceholder}}"
+          border="{{false}}"
+          bind:change="handleLockInput"
+        />
+        <van-field
+          label="{{texts.phoneLabel}}"
+          value="{{lockForm.phone}}"
+          data-field="phone"
+          type="number"
+          maxlength="11"
+          placeholder="{{texts.phonePlaceholder}}"
+          border="{{false}}"
+          bind:change="handleLockInput"
+        />
+      </van-cell-group>
+      <view class="time-row">
+        <picker mode="time" value="{{lockForm.startTime}}" data-field="startTime" bindchange="handleLockInput">
+          <view class="time-picker">{{texts.start}} {{lockForm.startTime}}</view>
+        </picker>
+        <picker mode="time" value="{{lockForm.endTime}}" data-field="endTime" bindchange="handleLockInput">
+          <view class="time-picker">{{texts.end}} {{lockForm.endTime}}</view>
+        </picker>
+      </view>
+      <view class="popup-actions">
+        <van-button plain round type="default" custom-class="popup-button popup-cancel-button" bind:click="hideLockModal">{{texts.cancel}}</van-button>
+        <van-button round type="info" custom-class="popup-button" bind:click="submitLock">{{texts.confirmLock}}</van-button>
+      </view>
+    </view>
+  </van-popup>
 </view>

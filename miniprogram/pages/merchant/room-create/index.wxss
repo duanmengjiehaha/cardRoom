@@ -1,0 +1,57 @@
+.form-card {
+  padding: 24rpx;
+}
+
+.form-group {
+  overflow: hidden;
+  border-radius: 24rpx;
+  background: #f8fbfe;
+}
+
+.image-field {
+  margin-top: 22rpx;
+}
+
+.image-picker {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+  background: #f4f7fb;
+  border: 1rpx dashed #bfd8ee;
+}
+
+.picker-image {
+  width: 100%;
+  height: 100%;
+}
+
+.picker-empty {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.picker-plus {
+  font-size: 72rpx;
+  color: var(--brand);
+  line-height: 1;
+}
+
+.image-tip {
+  margin-top: 14rpx;
+  font-size: 22rpx;
+  color: var(--text-light);
+}
+
+.submit-bar {
+  margin-top: 24rpx;
+  display: flex;
+  justify-content: center;
+}
+
+.submit-van-button {
+  width: 420rpx;
+}

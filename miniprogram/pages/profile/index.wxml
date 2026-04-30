@@ -1,34 +1,185 @@
-<!--pages/profile/index.wxml-->
-<view class="container">
-  <!-- 顶部头像资料栏 -->
-  <view class="profile-header">
-    <button wx:if="{{!userInfo.avatarUrl && canIUseGetUserProfile}}" class="avatar-wrapper" open-type="getUserInfo" bindgetuserinfo="getUserProfile">
-      <image class="avatar" src="{{userInfo.avatarUrl || 'https://core-normal.traeapi.us/api/ide/v1/text_to_image?prompt=A%20simple%2C%20flat%20design%20avatar%20of%20a%20person%27s%20face.%20The%20avatar%20should%20be%20gender-neutral%2C%20with%20a%20pleasant%2C%20welcoming%20expression.%20Use%20a%20limited%20color%20palette%20of%20soft%2C%20muted%20tones.%20The%20background%20should%20be%20a%20solid%2C%20light%20color.&image_size=square'}}" mode="cover"></image>
+<view class="page-shell" wx:if="{{!isMerchant}}">
+  <view class="profile-card card">
+    <button class="avatar-button" open-type="chooseAvatar" bindchooseavatar="handleChooseAvatar">
+      <image class="avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
     </button>
-    <image wx:else class="avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-    
-    <view class="user-info">
-      <text class="nickname">{{userInfo.nickName || '点击登录'}}</text>
-      <text class="user-title">线上预约会员</text>
+    <view class="profile-main">
+      <view class="nickname-field">
+        <input
+          wx:if="{{!logged}}"
+          type="nickname"
+          class="nickname-input"
+          placeholder="{{texts.nicknamePlaceholder}}"
+          bindblur="onNicknameBlur"
+          placeholder-class="nickname-placeholder"
+        />
+        <text wx:else class="nickname-text">{{userInfo.nickName}}</text>
+      </view>
     </view>
   </view>
 
-  <!-- 功能列表分区 -->
-  <view class="menu-card">
-    <view class="menu-item" data-page="orders" bindtap="navigateTo">
-      <image class="menu-icon" src="/images/icon_orders.png"/>
-      <text class="menu-text">我的订单</text>
-      <image class="arrow-icon" src="/images/icon_arrow_right.png"/>
+  <view class="menu card">
+    <van-cell
+      title="{{texts.ordersTitle}}"
+      is-link
+      icon="orders-o"
+      data-url="/pages/orders/index"
+      bind:click="navigateTo"
+    />
+    <van-cell
+      title="{{texts.historyTitle}}"
+      is-link
+      icon="clock-o"
+      data-url="/pages/history/index"
+      bind:click="navigateTo"
+    />
+    <van-cell
+      title="{{texts.switchRole}}"
+      is-link
+      icon="exchange"
+      bind:click="switchRole"
+    />
+  </view>
+
+  <view class="notice-card user-notice-card">
+    <view class="notice-line">{{texts.noticeLine1}}</view>
+    <view class="notice-phone">{{texts.noticeLine2}}</view>
+  </view>
+</view>
+
+<view class="page-shell merchant-page" wx:else>
+  <view class="profile-card card">
+    <view class="profile-title">{{texts.pageTitle}}</view>
+    <view class="profile-tip">{{texts.pageTip}}</view>
+
+    <view class="info-item" data-field="name" bindtap="openEdit">
+      <view class="info-main">
+        <view class="info-label-row">
+          <van-icon name="shop-o" size="30rpx" color="#8ea0b3" />
+          <view class="info-label">{{texts.shopNameLabel}}</view>
+        </view>
+        <view class="info-value">{{shopInfo.name}}</view>
+      </view>
+      <view class="info-arrow">></view>
     </view>
-    <view class="menu-item" data-page="history" bindtap="navigateTo">
-      <image class="menu-icon" src="/images/icon_history.png"/>
-      <text class="menu-text">历史商家</text>
-      <image class="arrow-icon" src="/images/icon_arrow_right.png"/>
+
+    <view class="info-item" data-field="address" bindtap="openEdit">
+      <view class="info-main">
+        <view class="info-label-row">
+          <van-icon name="location-o" size="30rpx" color="#8ea0b3" />
+          <view class="info-label">{{texts.addressLabel}}</view>
+        </view>
+        <view class="info-value">{{shopInfo.address}}</view>
+      </view>
+      <view class="info-arrow">></view>
     </view>
-    <view class="menu-item" data-page="merchant/login" bindtap="navigateTo">
-      <image class="menu-icon" src="/images/icon_merchant.png"/>
-      <text class="menu-text merchant-login">商家后台登录入口</text>
-      <image class="arrow-icon" src="/images/icon_arrow_right.png"/>
+
+    <view class="info-item" data-field="phone" bindtap="openEdit">
+      <view class="info-main">
+        <view class="info-label-row">
+          <van-icon name="phone-o" size="30rpx" color="#8ea0b3" />
+          <view class="info-label">{{texts.phoneLabel}}</view>
+        </view>
+        <view class="info-value">{{merchantInfo.phone}}</view>
+      </view>
+      <view class="info-arrow">></view>
+    </view>
+
+    <view class="info-item" data-field="hours" bindtap="openEdit">
+      <view class="info-main">
+        <view class="info-label-row">
+          <van-icon name="clock-o" size="30rpx" color="#8ea0b3" />
+          <view class="info-label">{{texts.hoursLabel}}</view>
+        </view>
+        <view class="info-value">{{shopInfo.hours.open}}-{{shopInfo.hours.close}}</view>
+      </view>
+      <view class="info-arrow">></view>
+    </view>
+
+    <view class="info-item service-item">
+      <view class="info-main">
+        <view class="info-label-row">
+          <van-icon name="label-o" size="30rpx" color="#8ea0b3" />
+          <view class="info-label">{{texts.serviceInfoLabel}}</view>
+        </view>
+        <view class="info-value">{{texts.serviceInfoValue}}</view>
+      </view>
+    </view>
+
+    <view class="info-item last-item logout-item" bindtap="logout">
+      <view class="info-main">
+        <view class="info-label-row">
+          <van-icon name="revoke" size="30rpx" color="#8ea0b3" />
+          <view class="info-label logout-label">{{texts.merchantLogout}}</view>
+        </view>
+      </view>
+      <view class="info-arrow">></view>
     </view>
   </view>
+
+  <view class="qr-card card" bindtap="openQrCard">
+    <view class="qr-main">
+      <view class="qr-icon-wrap">
+        <van-icon name="qr" size="36rpx" color="#4A90E2" />
+      </view>
+      <view class="qr-copy">
+        <view class="qr-title">{{texts.qrTitle}}</view>
+        <view class="qr-desc">{{texts.qrDesc}}</view>
+      </view>
+    </view>
+    <view class="info-arrow">></view>
+  </view>
+
+  <view class="notice-card">
+    <view class="notice-line">{{texts.noticeLine1}}</view>
+    <view class="notice-phone">{{texts.noticeLine2}}</view>
+  </view>
+
+  <van-popup show="{{editVisible}}" round position="bottom" custom-style="min-height: 38vh;" bind:close="closeEdit">
+    <view class="popup-shell">
+      <view class="popup-title">{{editTitle}}</view>
+      <input class="edit-input" value="{{editValue}}" placeholder="{{popupInputPlaceholder}}" bindinput="handleEditInput" />
+      <view class="popup-footer">
+        <view class="popup-actions">
+          <button class="popup-btn popup-cancel" bindtap="closeEdit">{{popupCancelText}}</button>
+          <button class="popup-btn popup-confirm" bindtap="saveEdit">{{popupConfirmText}}</button>
+        </view>
+      </view>
+    </view>
+  </van-popup>
+
+  <van-popup show="{{hoursVisible}}" round position="bottom" custom-style="min-height: 38vh;" bind:close="closeHoursPopup">
+    <view class="popup-shell">
+      <view class="popup-title">{{texts.hoursLabel}}</view>
+      <view class="time-range-row">
+        <picker mode="time" value="{{hoursRange.open}}" data-field="open" bindchange="handleHoursChange">
+          <view class="time-picker-box">{{hoursRange.open}}</view>
+        </picker>
+        <picker mode="time" value="{{hoursRange.close}}" data-field="close" bindchange="handleHoursChange">
+          <view class="time-picker-box">{{hoursRange.close}}</view>
+        </picker>
+      </view>
+      <view class="popup-footer">
+        <view class="popup-actions">
+          <button class="popup-btn popup-cancel" bindtap="closeHoursPopup">{{popupCancelText}}</button>
+          <button class="popup-btn popup-confirm" bindtap="saveHoursRange">{{popupConfirmText}}</button>
+        </view>
+      </view>
+    </view>
+  </van-popup>
+
+  <van-popup show="{{qrVisible}}" round position="bottom" custom-style="min-height: 50vh;" bind:close="closeQrPopup">
+    <view class="popup-shell qr-popup">
+      <view class="popup-title">{{texts.qrTitle}}</view>
+      <view class="qr-preview" wx:if="{{qrData && qrData.fileID}}">
+        <image class="qr-image" src="{{qrData.fileID}}" mode="aspectFit" show-menu-by-longpress="true"></image>
+      </view>
+      <view class="popup-footer">
+        <view class="popup-actions">
+          <button class="popup-btn popup-cancel" bindtap="closeQrPopup">{{popupCloseText}}</button>
+          <button class="popup-btn popup-confirm" bindtap="saveQrCode">{{popupSaveText}}</button>
+        </view>
+      </view>
+    </view>
+  </van-popup>
 </view>

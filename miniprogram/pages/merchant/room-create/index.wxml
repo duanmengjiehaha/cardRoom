@@ -1,0 +1,44 @@
+<view class="page-shell">
+  <view class="form-card card">
+    <van-cell-group border="{{false}}" custom-class="form-group">
+      <van-field
+        value="{{roomForm.name}}"
+        data-field="name"
+        label="{{texts.roomName}}"
+        placeholder="{{texts.roomNamePlaceholder}}"
+        border="{{false}}"
+        bind:change="handleFieldChange"
+      />
+      <van-field
+        value="{{roomForm.tableNo}}"
+        data-field="tableNo"
+        label="{{texts.roomNo}}"
+        placeholder="{{texts.roomNoPlaceholder}}"
+        border="{{false}}"
+        bind:change="handleFieldChange"
+      />
+      <van-field
+        value="{{roomForm.priceLabel}}"
+        data-field="priceLabel"
+        label="{{texts.price}}"
+        placeholder="{{texts.pricePlaceholder}}"
+        border="{{false}}"
+        bind:change="handleFieldChange"
+      />
+    </van-cell-group>
+
+    <view class="image-field">
+      <view class="image-picker" bindtap="chooseImage">
+        <image wx:if="{{roomForm.image && roomForm.image !== '/images/default-goods-image.png'}}" class="picker-image" src="{{roomForm.image}}" mode="aspectFill"></image>
+        <view wx:else class="picker-empty">
+          <view class="picker-plus">+</view>
+        </view>
+      </view>
+      <view class="image-tip">{{texts.imageTip}}</view>
+    </view>
+  </view>
+
+  <view class="submit-bar">
+    <van-button round type="info" custom-class="submit-van-button" bind:click="saveRoom">{{texts.save}}</van-button>
+  </view>
+</view>

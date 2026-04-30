@@ -1,38 +1,130 @@
-/**app.wxss**/
 page {
-  background-color: #F5F7FA; /* 页面底色 */
-  color: #333333; /* 正文黑 */
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  background:
+    radial-gradient(circle at top left, rgba(74, 144, 226, 0.18), transparent 42%),
+    linear-gradient(180deg, #fbfdff 0%, #f1f7fd 100%);
+  color: #1b2a3a;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
 :root {
-  --primary-color: #409EFF; /* 品牌深蓝 */
-  --primary-bg-light: #ECF5FF; /* 浅蓝背景 */
-  --page-bg: #F5F7FA;
-  --danger-color: #F53F3F; /* 占用警示红 */
-  --text-gray: #999999; /* 常规灰字 */
-  --text-black: #333333; /* 正文黑 */
-  --card-border-radius: 12rpx;
+  --brand: #4A90E2;
+  --brand-deep: #3f7fca;
+  --brand-light: #eef6fe;
+  --accent: #d7a33d;
+  --danger: #e45656;
+  --success: #1f9d61;
+  --text-main: #1b2a3a;
+  --text-secondary: #63758a;
+  --text-light: #8ea0b3;
+  --surface: #ffffff;
+  --line: #d8e8f8;
+  --card-radius: 24rpx;
+  --shadow: 0 16rpx 40rpx rgba(74, 144, 226, 0.09);
+}
+
+.page-shell {
+  min-height: 100vh;
+  padding: 24rpx 24rpx 160rpx;
+  box-sizing: border-box;
 }
 
 .card {
-  background-color: #fff;
-  border-radius: var(--card-border-radius);
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
-  margin: 24rpx;
-  padding: 24rpx;
+  background: var(--surface);
+  border-radius: var(--card-radius);
+  box-shadow: var(--shadow);
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.button-primary,
+.button-secondary,
+.button-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999rpx;
+  border: none;
+  font-size: 28rpx;
+  font-weight: 600;
+  padding: 0 28rpx;
+  line-height: 84rpx;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .button-primary {
-  background-color: var(--primary-color);
+  background: linear-gradient(135deg, #6faeea 0%, #4A90E2 100%);
   color: #fff;
-  border-radius: var(--card-border-radius);
-  text-align: center;
-  padding: 20rpx 0;
-  font-size: 32rpx;
-  font-weight: bold;
 }
 
-.button-primary:active {
-    background-color: #4096ff;
+.button-secondary {
+  background: #f3f8fe;
+  color: var(--brand);
+}
+
+.button-danger {
+  background: #fff0f0;
+  color: var(--danger);
+}
+
+.button-primary::after,
+.button-secondary::after,
+.button-danger::after {
+  border: none;
+}
+
+button {
+  text-align: center;
+}
+
+.van-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.van-button__text {
+  width: 100%;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44rpx;
+  padding: 0 18rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+
+.tag.warning {
+  background: #fff4e1;
+  color: #b57911;
+}
+
+.tag.success {
+  background: #e8f7ef;
+  color: var(--success);
+}
+
+.tag.danger {
+  background: #fff0f0;
+  color: var(--danger);
+}
+
+.empty-box {
+  margin-top: 32rpx;
+  padding: 72rpx 32rpx;
+  text-align: center;
+  color: var(--text-light);
 }

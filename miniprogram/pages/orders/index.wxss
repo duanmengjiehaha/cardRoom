@@ -1,130 +1,45 @@
-/* pages/orders/index.wxss */
-page {
-  background-color: var(--page-bg);
+.tabs {
+  overflow: hidden;
+  margin-bottom: 22rpx;
+}
+.cancel {
+  width: 200rpx !important;
+}
+.order {
+  padding: 26rpx;
+  margin-bottom: 18rpx;
+  border: 1rpx solid rgba(120, 182, 230, 0.14);
+  border-radius: 24rpx;
+  box-shadow: 0 10rpx 24rpx rgba(120, 182, 230, 0.08);
 }
 
-.container {
-  padding-bottom: 24rpx;
-}
-
-/* 顶部标签栏 */
-.tabs-container {
-  position: sticky;
-  top: 0;
-  display: flex;
-  justify-content: space-around;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
-  z-index: 10;
-}
-
-.tab-item {
-  padding: 24rpx 0;
-  font-size: 28rpx;
-  color: var(--text-gray);
-  border-bottom: 2px solid transparent;
-}
-
-.tab-item.active {
-  color: var(--primary-color);
-  font-weight: bold;
-  border-bottom-color: var(--primary-color);
-}
-
-/* 订单列表 */
-.orders-list {
-  padding: 24rpx;
-}
-
-.order-card {
-  background-color: #fff;
-  border-radius: var(--card-border-radius);
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
-  margin-bottom: 24rpx;
-  padding: 24rpx;
-}
-
-.card-header {
+.order-head,
+.order-foot {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 20rpx;
-  border-bottom: 1px solid #f5f5f5;
+  gap: 16rpx;
 }
 
-.shop-name {
+.order-shop {
   font-size: 30rpx;
-  font-weight: bold;
-  color: var(--text-black);
+  font-weight: 700;
 }
 
-.status-label {
-  font-size: 26rpx;
-  font-weight: bold;
-  padding: 6rpx 12rpx;
-  border-radius: 8rpx;
+.order-divider {
+  height: 1rpx;
+  background: var(--line);
+  margin: 18rpx 0;
 }
 
-.status-label.blue {
-  color: var(--primary-color);
-  background-color: var(--primary-bg-light);
-}
-
-.status-label.gray {
-  color: var(--text-gray);
-  background-color: #f0f0f0;
-}
-
-.status-label.red {
-  color: var(--danger-color);
-  background-color: #FFEBEB;
-}
-
-.card-body {
-  padding: 24rpx 0;
-  font-size: 26rpx;
-  color: var(--text-gray);
-}
-
-.detail-line {
-  line-height: 42rpx;
-}
-
-.card-footer {
-  display: flex;
-  justify-content: flex-end;
-  padding-top: 16rpx;
-}
-
-.cancel-btn {
+.order-room,
+.order-time,
+.order-duration {
   font-size: 24rpx;
-  color: var(--text-gray);
-  background-color: #fff;
-  border: 1px solid #ddd !important;
-  border-radius: 30rpx;
-  padding: 8rpx 24rpx;
-  margin: 0; /* 重置按钮外边距 */
-  line-height: 1.5;
-}
-.cancel-btn::after {
-    border: none;
+  color: var(--text-secondary);
+  line-height: 1.7;
 }
 
-/* 空状态 */
-.empty-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 200rpx;
-}
-
-.empty-icon {
-  width: 180rpx;
-  height: 180rpx;
-  margin-bottom: 24rpx;
-}
-
-.empty-text {
-  font-size: 28rpx;
-  color: var(--text-gray);
+.order-time {
+  margin-top: 10rpx;
 }

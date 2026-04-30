@@ -24,6 +24,7 @@
     }
   },
   "compileType": "miniprogram",
+  "cloudfunctionRoot": "../cloudfunctions/",
   "libVersion": "2.25.0",
   "appid": "",
   "projectname": "cardRoom",

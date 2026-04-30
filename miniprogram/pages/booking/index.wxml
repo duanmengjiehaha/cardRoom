@@ -1,47 +1,74 @@
-<!--pages/booking/index.wxml-->
-<view class="container">
-  <!-- 顶部强醒目提醒栏 -->
-  <view class="reminder-bar">
-    <text>预约成功请30分钟内到店核销，超时系统自动取消房间，释放占用时段</text>
+<view class="loading-layer" wx:if="{{isLoading}}">
+  <view class="loading-card card">
+    <view class="loading-text">\u52a0\u8f7d\u4e2d...</view>
+  </view>
+</view>
+
+<view class="page-shell">
+  <view class="notice card" wx:if="{{shopInfo}}">
+    <view class="notice-title">{{texts.arrivalReminder}}</view>
+    <view class="notice-text">{{shopInfo.notice}}</view>
   </view>
 
-  <!-- 预约基础信息栏 -->
-  <view class="booking-info-bar">
-    <view class="info-line">预约商家：{{shopName}}</view>
-    <view class="info-line">预约桌号：{{roomName}}</view>
+  <view class="summary card" wx:if="{{roomInfo}}">
+    <view class="summary-title">{{shopInfo.name}}</view>
+    <view class="summary-room">{{roomInfo.name}} {{roomInfo.tableNo}}</view>
+    <view class="summary-hours">{{texts.businessHours}} {{shopInfo.hours.open}} - {{shopInfo.hours.close}}</view>
   </view>
 
-  <!-- 时段选择核心区 -->
-  <view class="time-slot-section">
-    <view class="section-title">选择预约时段（最低预约半小时）</view>
-    <view class="time-slots-grid">
-      <view 
-        wx:for="{{timeSlots}}" 
-        wx:key="time" 
-        class="slot-box {{item.status}}" 
+  <view class="slot-panel card">
+    <view class="slot-head">
+      <view class="section-title">{{texts.slotTitle}}</view>
+      <van-tag plain type="primary">{{texts.opening}}</van-tag>
+    </view>
+    <view class="slot-desc">{{texts.slotDesc}}</view>
+    <view class="slot-grid">
+      <view
+        wx:for="{{timeSlots}}"
+        wx:key="time"
+        class="slot {{item.status}}"
         data-index="{{index}}"
         bindtap="selectSlot"
       >
         {{item.time}}
-        <image wx:if="{{item.status === 'selected'}}" class="check-icon" src="/images/icon_check_white.png"/>
       </view>
     </view>
+    <view class="selected-tip">{{selectedText}}</view>
   </view>
 
-  <!-- 信息填写模块 -->
-  <view class="form-section">
-    <view class="form-item">
-      <image class="form-icon" src="/images/icon_user.png"/>
-      <input class="form-input" placeholder="请输入预约真实姓名" model:value="{{name}}"/>
-    </view>
-    <view class="form-item">
-      <image class="form-icon" src="/images/icon_phone.png"/>
-      <input class="form-input" type="number" placeholder="请输入有效手机号" model:value="{{phone}}"/>
-    </view>
+  <view class="form card">
+    <van-cell-group border="{{false}}" custom-class="form-group">
+      <van-field
+        label="{{texts.userLabel}}"
+        value="{{name}}"
+        data-field="name"
+        placeholder="{{texts.userPlaceholder}}"
+        border="{{false}}"
+        bind:change="handleFieldChange"
+      />
+      <view class="phone-row">
+        <van-field
+          label="{{texts.phoneLabel}}"
+          value="{{phone}}"
+          data-field="phone"
+          type="number"
+          maxlength="11"
+          placeholder="{{texts.phonePlaceholder}}"
+          border="{{false}}"
+          bind:change="handleFieldChange"
+        />
+        <button
+          wx:if="{{!phoneAuthDisabled && !phone}}"
+          class="phone-trigger"
+          open-type="getPhoneNumber"
+          bindgetphonenumber="handleGetPhoneNumber"
+        ></button>
+      </view>
+    </van-cell-group>
+    <view class="phone-tip">{{texts.phoneTip}}</view>
   </view>
 
-  <!-- 底部固定操作栏 -->
-  <view class="bottom-bar">
-    <view class="button-primary" bindtap="submitBooking">确认提交预约</view>
+  <view class="submit-bar">
+    <van-button round type="info" custom-class="submit-van-button" bind:click="submitBooking">{{texts.submit}}</van-button>
   </view>
 </view>

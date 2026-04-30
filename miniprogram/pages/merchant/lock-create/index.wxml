@@ -1,0 +1,73 @@
+<view class="loading-layer" wx:if="{{isLoading}}">
+  <view class="loading-card card">
+    <view class="loading-text">\u52a0\u8f7d\u4e2d...</view>
+  </view>
+</view>
+
+<view class="page-shell" wx:if="{{roomInfo}}">
+  <view class="summary card">
+    <view class="summary-head">
+      <image class="summary-image" src="{{roomInfo.image || '/images/default-goods-image.png'}}" mode="aspectFill"></image>
+      <view class="summary-main">
+        <view class="summary-room">{{roomInfo.name}} {{roomInfo.tableNo}}</view>
+        <view class="summary-hours">{{shopInfo.hours.open}} - {{shopInfo.hours.close}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="slot-panel card">
+    <view class="slot-head">
+      <view class="section-title">{{texts.occupiedTitle}}</view>
+      <van-tag plain type="warning">{{texts.occupiedTag}}</van-tag>
+    </view>
+    <view class="slot-desc">{{texts.slotDesc}}</view>
+    <view class="slot-grid">
+      <view wx:for="{{timeSlots}}" wx:key="time" class="slot {{item.status === 'occupied' ? 'occupied' : item.status === 'past' ? 'past' : 'available'}}">
+        {{item.time}}
+      </view>
+    </view>
+  </view>
+
+  <view class="form card">
+    <van-cell-group border="{{false}}" custom-class="form-group">
+      <van-field
+        label="{{texts.customerLabel}}"
+        value="{{customerName}}"
+        data-field="customerName"
+        placeholder="{{texts.customerPlaceholder}}"
+        border="{{false}}"
+        bind:change="handleFieldChange"
+      />
+      <van-field
+        label="{{texts.phoneLabel}}"
+        value="{{phone}}"
+        data-field="phone"
+        type="number"
+        maxlength="11"
+        placeholder="{{texts.phonePlaceholder}}"
+        border="{{false}}"
+        bind:change="handleFieldChange"
+      />
+    </van-cell-group>
+
+    <view class="time-grid">
+      <view class="time-col">
+        <view class="time-label">{{texts.start}}</view>
+        <picker mode="time" value="{{startTime}}" bindchange="handleStartChange">
+          <view class="time-picker required">{{startTime || texts.selectStart}}</view>
+        </picker>
+      </view>
+      <view class="time-col">
+        <view class="time-label">{{texts.end}}</view>
+        <picker mode="time" value="{{endTime}}" bindchange="handleEndChange">
+          <view class="time-picker required">{{endTime || texts.selectEnd}}</view>
+        </picker>
+      </view>
+    </view>
+  </view>
+
+  <view class="submit-actions">
+    <van-button plain round type="default" custom-class="lock-button lock-cancel-button" bind:click="goBack">{{texts.cancel}}</van-button>
+    <van-button round type="info" custom-class="lock-button" bind:click="submitLock">{{texts.confirmLock}}</van-button>
+  </view>
+</view>

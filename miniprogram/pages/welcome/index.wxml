@@ -1,18 +1,56 @@
-<!--pages/welcome/index.wxml-->
-<view class="container">
-  <image class="brand-logo" src="/images/logo.png"/>
-  <view class="title">乐闲阁棋牌订位</view>
-  <view class="subtitle">请选择您的身份进入对应系统</view>
+<view class="welcome-page">
+  <view class="welcome-body">
+    <view class="title-block">
+      <view class="page-title">{{texts.title}}</view>
+      <view class="page-subtitle">{{texts.subtitle}}</view>
+    </view>
 
-  <view class="card-button user" bindtap="handleUser">
-    <image class="icon" src="/images/icon_user_card.png"/>
-    <view class="text">我是个人用户，扫码预约打牌</view>
+    <view class="identity-list">
+      <button class="identity-card identity-card-user" bindtap="chooseUser">
+        <view class="identity-icon user-icon">
+          <van-icon name="contact" size="40rpx" color="#6d98c0" />
+        </view>
+        <view class="identity-content">
+          <view class="identity-title">{{texts.userEntry}}</view>
+          <view class="identity-desc">{{texts.userDesc}}</view>
+        </view>
+      </button>
+
+      <view class="merchant-wrap">
+        <button class="identity-card identity-card-merchant" bindtap="toggleMerchant">
+          <view class="identity-icon merchant-icon">
+            <van-icon name="shop-o" size="40rpx" color="#ffffff" />
+          </view>
+          <view class="identity-content">
+            <view class="identity-title merchant-title">{{texts.merchantEntry}}</view>
+            <view class="identity-desc merchant-desc">{{texts.merchantDesc}}</view>
+          </view>
+        </button>
+
+        <view wx:if="{{merchantOpen}}" class="merchant-panel">
+          <view class="merchant-panel-title">{{texts.merchantTitle}}</view>
+
+          <view class="field">
+            <view class="field-label">{{texts.accountLabel}}</view>
+            <input class="field-input" placeholder="{{texts.accountPlaceholder}}" value="{{account}}" data-field="account" bindinput="handleInput" />
+          </view>
+
+          <view class="field">
+            <view class="field-label">{{texts.passwordLabel}}</view>
+            <view class="password-row">
+              <input class="field-input password-input" password="{{!showPassword}}" placeholder="{{texts.passwordPlaceholder}}" value="{{password}}" data-field="password" bindinput="handleInput" />
+              <view class="password-eye" bindtap="togglePassword">
+                <van-icon name="{{showPassword ? 'eye-o' : 'closed-eye'}}" size="34rpx" color="#7397bc" />
+              </view>
+            </view>
+          </view>
+
+          <button class="merchant-submit" bindtap="loginMerchant">{{texts.login}}</button>
+          <view class="demo-account">{{texts.demo}}</view>
+        </view>
+      </view>
+    </view>
   </view>
 
-  <view class="card-button merchant" bindtap="handleMerchant">
-    <image class="icon" src="/images/icon_merchant_card.png"/>
-    <view class="text">我是商家，登录后台管理店铺</view>
-  </view>
-
-  <view class="footer">© 2024 乐闲阁</view>
+  <view class="page-footer">{{texts.footer}}</view>
 </view>

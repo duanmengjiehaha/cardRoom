@@ -1,39 +1,35 @@
-<!--pages/merchant/orders/index.wxml-->
-<view class="container">
-  <!-- 顶部悬浮分类标签栏 -->
-  <view class="tabs-container">
-    <view 
-      class="tab-item {{activeTab === item ? 'active' : ''}}" 
-      wx:for="{{tabs}}" 
-      wx:key="*this" 
-      data-tab="{{item}}" 
-      bindtap="changeTab"
-    >
-      {{item}}
-    </view>
+<view class="page-shell">
+  <view class="tabs card">
+    <van-tabs active="{{activeTab}}" color="#4A90E2" line-width="36" line-height="3" bind:change="handleTabChange">
+      <van-tab wx:for="{{tabs}}" wx:key="key" title="{{item.label}}" name="{{item.key}}"></van-tab>
+    </van-tabs>
   </view>
 
-  <!-- 订单列表 -->
-  <view class="orders-list">
-    <block wx:if="{{filteredOrders.length > 0}}">
-      <view class="order-card" wx:for="{{filteredOrders}}" wx:key="id">
-        <view class="card-body">
-          <view class="detail-line">预约人：{{item.name || '匿名用户'}}</view>
-          <view class="detail-line">联系电话：{{item.phone || '未提供'}}</view>
-          <view class="detail-line">预约桌号：{{item.roomName}}</view>
-          <view class="detail-line">预约时段：{{item.time}}</view>
-        </view>
-        <view class="card-footer">
-          <button wx:if="{{item.status === '待使用'}}" class="verify-btn" data-id="{{item.id}}" bindtap="verifyOrder">一键核销</button>
-          <view wx:else class="status-text">{{item.status === '已完成' ? '已完成核销' : '已取消'}}</view>
-        </view>
-      </view>
-    </block>
-    <block wx:else>
-      <view class="empty-placeholder">
-        <image class="empty-icon" src="/images/icon_empty.png"/>
-        <text class="empty-text">暂无相关订单</text>
-      </view>
-    </block>
+  <view class="search-card card">
+    <input
+      class="search-input"
+      type="number"
+      maxlength="4"
+      value="{{searchPhoneSuffix}}"
+      placeholder="{{texts.searchPlaceholder}}"
+      bindinput="handleSearchInput"
+    />
   </view>
+
+  <block wx:if="{{filteredOrders.length}}">
+    <view class="order card" wx:for="{{filteredOrders}}" wx:key="id">
+      <view class="order-head">
+        <view class="order-user">{{item.userName || texts.anonymousUser}}</view>
+        <van-tag round type="{{item.statusTag === 'danger' ? 'danger' : item.statusTag === 'success' ? 'success' : 'warning'}}">{{item.statusText}}</van-tag>
+      </view>
+      <view class="order-divider"></view>
+      <view class="order-detail">{{item.phone || texts.noPhone}}</view>
+      <view class="order-detail">{{item.roomName}}</view>
+      <view class="order-foot">
+        <view class="order-detail">{{item.timeRangeText}}</view>
+        <van-button wx:if="{{item.status === 'pending'}}" round type="info" size="small" data-id="{{item.id}}" bind:click="verifyOrder">{{texts.verifyNow}}</van-button>
+      </view>
+    </view>
+  </block>
+  <van-empty wx:else description="{{texts.empty}}" />
 </view>

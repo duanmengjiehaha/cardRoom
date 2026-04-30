@@ -1,97 +1,52 @@
-/* pages/merchant/orders/index.wxss */
-page {
-  background-color: var(--page-bg);
+.tabs {
+  overflow: hidden;
+  margin-bottom: 22rpx;
 }
 
-.container {
-  padding-bottom: 24rpx;
+.search-card {
+  padding: 22rpx 26rpx;
+  margin-bottom: 22rpx;
 }
 
-/* 顶部标签栏 */
-.tabs-container {
-  position: sticky;
-  top: 0;
-  display: flex;
-  justify-content: space-around;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
-  z-index: 10;
+.search-input {
+  height: 78rpx;
+  padding: 0 22rpx;
+  border-radius: 18rpx;
+  background: #f6f9fc;
+  font-size: 26rpx;
+  color: var(--text-main);
+  box-sizing: border-box;
 }
 
-.tab-item {
-  padding: 24rpx 0;
-  font-size: 28rpx;
-  color: var(--text-gray);
-  border-bottom: 2px solid transparent;
+.order {
+  padding: 26rpx;
+  margin-bottom: 18rpx;
+  border: 1rpx solid rgba(120, 182, 230, 0.14);
+  border-radius: 24rpx;
+  box-shadow: 0 10rpx 24rpx rgba(120, 182, 230, 0.08);
 }
 
-.tab-item.active {
-  color: var(--primary-color);
-  font-weight: bold;
-  border-bottom-color: var(--primary-color);
-}
-
-/* 订单列表 */
-.orders-list {
-  padding: 24rpx;
-}
-
-.order-card {
-  background-color: #fff;
-  border-radius: var(--card-border-radius);
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.06);
-  margin-bottom: 24rpx;
-  padding: 24rpx;
+.order-head,
+.order-foot {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16rpx;
 }
 
-.card-body {
-  font-size: 26rpx;
-  color: var(--text-gray);
+.order-user {
+  font-size: 30rpx;
+  font-weight: 700;
 }
 
-.detail-line {
-  line-height: 44rpx;
+.order-divider {
+  height: 1rpx;
+  background: var(--line);
+  margin: 18rpx 0;
 }
 
-.card-footer {
-  align-self: flex-end;
-}
-
-.verify-btn {
-  background-color: var(--primary-color);
-  color: white;
-  font-size: 28rpx;
-  padding: 15rpx 30rpx;
-  border-radius: var(--card-border-radius);
-  border: none;
-}
-.verify-btn::after {
-    border: none;
-}
-
-.status-text {
-  color: var(--text-gray);
-  font-size: 28rpx;
-}
-
-/* 空状态 */
-.empty-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 200rpx;
-}
-
-.empty-icon {
-  width: 180rpx;
-  height: 180rpx;
-  margin-bottom: 24rpx;
-}
-
-.empty-text {
-  font-size: 28rpx;
-  color: var(--text-gray);
+.order-detail {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  line-height: 1.7;
 }

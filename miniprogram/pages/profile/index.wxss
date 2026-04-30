@@ -1,96 +1,310 @@
-/* pages/profile/index.wxss */
-page {
-  background-color: var(--page-bg);
+.profile-card,
+.menu {
+  padding: 28rpx;
+  margin-bottom: 22rpx;
+  border-radius: 26rpx;
+  box-shadow: 0 10rpx 30rpx rgba(57, 86, 121, 0.08);
 }
 
-.container {
-  padding-bottom: 24rpx;
-}
-
-/* 顶部头像资料栏 */
-.profile-header {
-  background: linear-gradient(180deg, var(--primary-color) 0%, #4096ff 100%);
+.profile-card {
   display: flex;
   align-items: center;
-  padding: 80rpx 40rpx;
-  color: #fff;
+  min-height: 148rpx;
 }
 
-.avatar-wrapper {
+.avatar-button {
   padding: 0;
   margin: 0;
-  border: none;
+  width: 146rpx !important;
+  height: 116rpx;
+  border-radius: 50%;
   background: transparent;
   line-height: 1;
+  flex-shrink: 0;
 }
-.avatar-wrapper::after {
-    border: none;
+
+.avatar-button::after {
+  border: none;
 }
 
 .avatar {
-  width: 120rpx;
-  height: 120rpx;
+  width: 116rpx;
+  height: 116rpx;
   border-radius: 50%;
-  border: 4rpx solid var(--primary-bg-light);
-  margin-right: 24rpx;
+  background: #eef3f8;
+  box-shadow: 0 8rpx 20rpx rgba(120, 182, 230, 0.16);
 }
 
-.user-info {
+.profile-main {
+  flex: 1;
+  min-width: 0;
+  margin-left: 24rpx;
+}
+
+.nickname-field {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  min-height: 84rpx;
+  width: 100%;
+  padding-right: 6rpx;
+  box-sizing: border-box;
+}
+
+.nickname-input {
+  width: 100%;
+  font-size: 28rpx;
+  color: var(--text-main);
+  line-height: 1.5;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.nickname-text {
+  width: 100%;
+  font-size: 35rpx;
+  line-height: 1.5;
+  color: var(--text-main);
+}
+
+.nickname-placeholder {
+  color: #8c97a6;
+}
+
+.menu {
+  overflow: hidden;
+}
+
+.user-notice-card {
+  margin-top: 22rpx;
+}
+
+.merchant-page {
+  min-height: 100vh;
+  background: #f4f6f8;
+}
+
+.merchant-page .profile-card,
+.qr-card {
+  display: block;
+  padding: 28rpx;
+  margin-bottom: 22rpx;
+  border-radius: 26rpx;
+  background: #ffffff;
+  box-shadow: 0 10rpx 26rpx rgba(74, 144, 226, 0.08);
+}
+
+.profile-title {
+  text-align: center;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.profile-tip {
+  margin-top: 10rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--text-light);
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #edf2f7;
+}
+
+.last-item {
+  border-bottom: none;
+  padding-bottom: 8rpx;
+}
+
+.info-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.info-label-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.info-label {
+  font-size: 24rpx;
+  color: var(--text-light);
+}
+
+.logout-label {
+  color: #6f8296;
+}
+
+.info-value {
+  margin-top: 10rpx;
+  font-size: 28rpx;
+  color: var(--text-main);
+  line-height: 1.7;
+  word-break: break-all;
+}
+
+.info-arrow {
+  flex-shrink: 0;
+  font-size: 30rpx;
+  color: #c2cad4;
+}
+
+.qr-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.qr-main {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+}
+
+.qr-icon-wrap {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 20rpx;
+  background: rgba(74, 144, 226, 0.12);
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 
-.nickname {
-  font-size: 36rpx;
-  font-weight: bold;
-  margin-bottom: 8rpx;
+.qr-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--text-main);
 }
 
-.user-title {
-  font-size: 24rpx;
-  color: #E8F3FF;
-  opacity: 0.8;
+.qr-desc {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: var(--text-light);
 }
 
-/* 功能列表分区 */
-.menu-card {
-  background-color: #fff;
-  border-radius: var(--card-border-radius);
-  margin: -40rpx 24rpx 0;
-  padding: 16rpx 0;
-  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.08);
-  position: relative;
-  z-index: 1;
+.notice-card {
+  margin-top: 18rpx;
+  padding: 24rpx 28rpx;
+  border-radius: 24rpx;
+  background: #edf1f5;
+  text-align: center;
 }
 
-.menu-item {
+.notice-line {
+  font-size: 22rpx;
+  color: #90a0b2;
+  line-height: 1.7;
+}
+
+.notice-phone {
+  margin-top: 8rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #5e6f83;
+}
+
+.popup-shell {
+  padding: 32rpx 26rpx 24rpx;
+  min-height: 33vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-title {
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.edit-input {
+  margin-top: 28rpx;
+  min-height: 88rpx;
+  padding: 0 24rpx;
+  border-radius: 20rpx;
+  background: #f5f8fc;
+  font-size: 28rpx;
+  color: var(--text-main);
+  box-sizing: border-box;
+}
+
+.popup-footer {
+  margin-top: auto;
+  padding-top: 40rpx;
+  padding-bottom: 28rpx;
+  border-top: 1rpx solid #edf2f7;
+}
+
+.popup-actions {
+  display: flex;
+  gap: 50rpx;
+}
+
+.time-range-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16rpx;
+  margin-top: 28rpx;
+}
+
+.time-picker-box {
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  border-radius: 20rpx;
+  background: #f5f8fc;
+  font-size: 28rpx;
+  color: var(--text-main);
+}
+
+.popup-btn {
+  flex: 1;
+  height: 84rpx;
+  line-height: 84rpx;
+  border-radius: 999rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  border: none;
+}
+
+.popup-btn::after {
+  border: none;
+}
+
+.popup-cancel {
+  background: #f2f5f8;
+  color: #7d8ea0;
+}
+
+.popup-confirm {
+  background: linear-gradient(135deg, #76b1eb 0%, #4A90E2 100%);
+  color: #ffffff;
+}
+
+.qr-popup {
+  min-height: 50vh;
+}
+
+.qr-preview {
   display: flex;
   align-items: center;
-  padding: 32rpx 24rpx;
+  justify-content: center;
+  margin-top: 28rpx;
+  padding: 24rpx;
+  border-radius: 24rpx;
+  background: #f7f9fc;
 }
 
-.menu-item + .menu-item {
-  border-top: 1rpx solid #f0f0f0;
-}
-
-.menu-icon {
-  width: 44rpx;
-  height: 44rpx;
-  margin-right: 24rpx;
-}
-
-.menu-text {
-  flex: 1;
-  font-size: 30rpx;
-  color: var(--text-black);
-}
-
-.merchant-login {
-  color: var(--primary-color);
-}
-
-.arrow-icon {
-  width: 28rpx;
-  height: 28rpx;
+.qr-image {
+  width: 420rpx;
+  height: 420rpx;
 }

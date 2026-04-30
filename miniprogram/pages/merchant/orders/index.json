@@ -1,3 +1,10 @@
 {
-  "navigationBarTitleText": "订单核销"
+  "navigationBarTitleText": "\u9884\u7ea6\u8ba2\u5355",
+  "usingComponents": {
+    "van-button": "/miniprogram_npm/@vant/weapp/button/index",
+    "van-empty": "/miniprogram_npm/@vant/weapp/empty/index",
+    "van-tab": "/miniprogram_npm/@vant/weapp/tab/index",
+    "van-tabs": "/miniprogram_npm/@vant/weapp/tabs/index",
+    "van-tag": "/miniprogram_npm/@vant/weapp/tag/index"
+  }
 }

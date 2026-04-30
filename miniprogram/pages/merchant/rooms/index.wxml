@@ -1,38 +1,46 @@
-<!--pages/merchant/rooms/index.wxml-->
-<view class="container">
-  <view class="header">
-    <button class="add-room-btn" bindtap="showAddRoomModal">+ 新增桌位</button>
+<view class="page-shell">
+  <view class="manage-head card">
+    <button class="button-primary add-button" bindtap="goCreatePage">新增房间</button>
   </view>
 
-  <view class="room-list">
-    <view class="room-card" wx:for="{{roomList}}" wx:key="id">
-      <image class="room-image" src="{{item.image}}" mode="aspectFill"/>
-      <view class="room-details">
-        <view class="room-name">{{item.name}}</view>
-        <view class="room-status {{item.status === '空闲' ? 'idle' : ''}}">{{item.status}}</view>
+  <view class="room card" wx:for="{{roomList}}" wx:key="id">
+    <view class="room-top">
+      <image class="room-image" src="{{item.image || '/images/default-goods-image.png'}}" mode="aspectFill"></image>
+      <view class="room-main">
+        <view class="room-name">{{item.displayName}}</view>
+        <view class="room-price">参考价：{{item.priceLabel}}</view>
+        <text class="tag {{item.statusTag}}">{{item.status}}</text>
       </view>
-      <view class="actions">
-        <button class="action-btn lock" bindtap="lockRoom">线下锁定</button>
-        <view class="icon-group">
-          <image class="icon" src="/images/icon_edit.png" bindtap="editRoom"/>
-          <image wx:if="{{item.status === '空闲'}}" class="icon" src="/images/icon_delete.png" bindtap="deleteRoom"/>
-        </view>
-      </view>
+    </view>
+    <view class="room-actions">
+      <button class="button-primary room-action" data-id="{{item.id}}" bindtap="openLockModal">线下锁台</button>
+      <button class="button-secondary room-action" data-id="{{item.id}}" bindtap="goEditPage">修改信息</button>
+      <button wx:if="{{item.canDelete}}" class="button-danger room-action" data-id="{{item.id}}" bindtap="deleteRoom">删除房间</button>
     </view>
   </view>
 
-  <!-- 新增/编辑桌位弹窗 -->
-  <view class="modal-mask" wx:if="{{showAddModal}}" bindtap="hideAddRoomModal"></view>
-  <view class="modal-dialog" wx:if="{{showAddModal}}">
-    <view class="modal-title">新增桌位</view>
-    <view class="modal-content">
-        <input class="modal-input" placeholder="自定义房间名称/桌号" model:value="{{newRoomName}}"/>
-        <input class="modal-input" placeholder="参考展示单价" model:value="{{newRoomPrice}}"/>
-        <!-- 图片上传功能暂未实现 -->
-    </view>
-    <view class="modal-footer">
-      <button class="btn-cancel" bindtap="hideAddRoomModal">取消</button>
-      <button class="btn-confirm" bindtap="addRoom">确认</button>
+  <view wx:if="{{showLockModal}}" class="overlay">
+    <view class="overlay-backdrop" bindtap="hideLockModal"></view>
+    <view class="overlay-panel">
+      <view class="overlay-head">
+        <view class="overlay-title">线下锁台</view>
+        <view class="overlay-close" bindtap="hideLockModal">×</view>
+      </view>
+      <view class="overlay-subtitle">{{lockRoomName}}</view>
+      <input class="modal-input" placeholder="客人姓名" value="{{lockForm.customerName}}" data-field="customerName" bindinput="handleLockInput" />
+      <input class="modal-input" placeholder="联系电话" value="{{lockForm.phone}}" data-field="phone" bindinput="handleLockInput" />
+      <view class="time-row">
+        <picker mode="time" value="{{lockForm.startTime}}" data-field="startTime" bindchange="handleLockInput">
+          <view class="time-picker">开始 {{lockForm.startTime}}</view>
+        </picker>
+        <picker mode="time" value="{{lockForm.endTime}}" data-field="endTime" bindchange="handleLockInput">
+          <view class="time-picker">结束 {{lockForm.endTime}}</view>
+        </picker>
+      </view>
+      <view class="modal-actions">
+        <button class="button-secondary modal-button" bindtap="hideLockModal">取消</button>
+        <button class="button-primary modal-button" bindtap="submitLock">确认</button>
+      </view>
     </view>
   </view>
 </view>

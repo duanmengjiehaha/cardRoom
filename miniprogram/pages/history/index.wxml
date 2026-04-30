@@ -1,20 +1,16 @@
-<!--pages/history/index.wxml-->
-<view class="container">
-  <block wx:if="{{history.length > 0}}">
-    <view class="history-card" wx:for="{{history}}" wx:key="id">
-      <image class="shop-icon" src="/images/icon_shop.png"/>
-      <view class="shop-info">
-        <view class="shop-name">{{item.name}}</view>
-        <view class="shop-detail">{{item.address}}</view>
-        <view class="shop-detail">最近访问：{{item.lastVisit}}</view>
+<view class="page-shell">
+  <block wx:if="{{history.length}}">
+    <view class="history card" wx:for="{{history}}" wx:key="shopId" data-shopid="{{item.shopId}}" bindtap="goShop">
+      <view class="history-head">
+        <view class="history-name">{{item.shopName}}</view>
+        <view class="history-tags">
+          <view wx:if="{{item.browsed}}" class="history-tag browse-tag">浏览过</view>
+          <view wx:if="{{item.booked}}" class="history-tag book-tag">预约过</view>
+        </view>
       </view>
-      <button class="rebook-btn" bindtap="reBook">一键再次预约</button>
+      <view class="history-address">{{item.address}}</view>
+      <view class="history-time">最近访问：{{item.lastVisitText}}</view>
     </view>
   </block>
-  <block wx:else>
-      <view class="empty-placeholder">
-        <image class="empty-icon" src="/images/icon_empty.png"/>
-        <text class="empty-text">暂无历史商家记录</text>
-      </view>
-    </block>
+  <view wx:else class="empty-box card">暂无历史商家哦~</view>
 </view>

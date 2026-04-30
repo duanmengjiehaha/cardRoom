@@ -1,22 +1,16 @@
-<!--pages/merchant/login/index.wxml-->
-<view class="container">
-  <view class="brand-banner">
-    <text class="banner-title">商家专属后台登录</text>
-  </view>
-
-  <view class="form-card">
-    <view class="form-item">
-      <image class="form-icon" src="/images/icon_account.png"/>
-      <input class="form-input" placeholder="请输入平台分配商家账号" model:value="{{account}}"/>
+<view class="login-page">
+  <view class="login-card card">
+    <view class="login-title">商家后台登录</view>
+    <view class="login-desc">仅支持管理员发放的专属账号密码登录，不开放注册。</view>
+    <view class="field">
+      <view class="label">商家账号</view>
+      <input class="input" placeholder="请输入账号" value="{{account}}" data-field="account" bindinput="handleInput" />
     </view>
-    <view class="form-item">
-      <image class="form-icon" src="/images/icon_password.png"/>
-      <input class="form-input" type="password" placeholder="请输入专属登录密码" model:value="{{password}}"/>
+    <view class="field">
+      <view class="label">登录密码</view>
+      <input class="input" password placeholder="请输入密码" value="{{password}}" data-field="password" bindinput="handleInput" />
     </view>
-    <button class="login-btn" bindtap="login">安全登录后台</button>
-  </view>
-
-  <view class="footer-note">
-    账号密码由平台管理员统一分配，请勿私下转借他人，保障店铺数据安全
+    <button class="button-primary submit" bindtap="login">登录商家后台</button>
+    <view class="demo">演示账号：`shopa / 123456`、`shopb / 123456`</view>
   </view>
 </view>

@@ -1,3 +1,9 @@
 {
-  "navigationBarTitleText": "选择预约时段"
+  "navigationBarTitleText": "\u586b\u5199\u9884\u7ea6",
+  "usingComponents": {
+    "van-button": "/miniprogram_npm/@vant/weapp/button/index",
+    "van-cell-group": "/miniprogram_npm/@vant/weapp/cell-group/index",
+    "van-field": "/miniprogram_npm/@vant/weapp/field/index",
+    "van-tag": "/miniprogram_npm/@vant/weapp/tag/index"
+  }
 }

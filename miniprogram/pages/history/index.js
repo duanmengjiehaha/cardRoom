@@ -1,19 +1,35 @@
-// pages/history/index.js
+const app = getApp();
+const service = require('../../utils/service');
+const { withLoading } = require('../../utils/loading');
+
 Page({
   data: {
     history: []
   },
 
-  onShow() {
-    const history = wx.getStorageSync('shopHistory') || [];
-    this.setData({ history });
+  async onShow() {
+    try {
+      await withLoading('\u52a0\u8f7d\u4e2d', async () => {
+        await service.bootstrap().catch(() => {});
+        this.setData({
+          history: await service.listHistory()
+        });
+      });
+    } catch (error) {
+      wx.showToast({
+        title: (error && error.message) || '\u5386\u53f2\u5546\u5bb6\u52a0\u8f7d\u5931\u8d25',
+        icon: 'none'
+      });
+    }
   },
 
-  reBook(e) {
-    // 这里可以根据 shopId 跳转到对应的商家首页
-    // 为简化，我们直接跳转到首页
-    wx.switchTab({
-      url: '/pages/home/index'
+  goShop(e) {
+    const shopId = e.currentTarget.dataset.shopid;
+    app.setCurrentShopId(shopId);
+    withLoading('\u8df3\u8f6c\u4e2d', async () => {
+      wx.switchTab({
+        url: '/pages/home/index'
+      });
     });
   }
 });

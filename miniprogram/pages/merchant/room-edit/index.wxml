@@ -1,0 +1,39 @@
+<view class="page-shell">
+  <view class="form-card card">
+    <view class="image-panel" bindtap="chooseImage">
+      <image class="preview-image" src="{{roomForm.image || '/images/default-goods-image.png'}}" mode="aspectFill"></image>
+      <view class="image-tip">{{texts.imageTip}}</view>
+    </view>
+
+    <van-cell-group border="{{false}}" custom-class="form-group">
+      <van-field
+        value="{{roomForm.name}}"
+        data-field="name"
+        label="{{texts.roomName}}"
+        placeholder="{{texts.roomNamePlaceholder}}"
+        border="{{false}}"
+        bind:change="handleFieldChange"
+      />
+      <van-field
+        value="{{roomForm.tableNo}}"
+        data-field="tableNo"
+        label="{{texts.roomNo}}"
+        placeholder="{{texts.roomNoPlaceholder}}"
+        border="{{false}}"
+        bind:change="handleFieldChange"
+      />
+      <van-field
+        value="{{roomForm.priceLabel}}"
+        data-field="priceLabel"
+        label="{{texts.price}}"
+        placeholder="{{texts.pricePlaceholder}}"
+        border="{{false}}"
+        bind:change="handleFieldChange"
+      />
+    </van-cell-group>
+  </view>
+
+  <view class="submit-bar">
+    <van-button round type="info" custom-class="submit-van-button" bind:click="saveRoom">{{texts.save}}</van-button>
+  </view>
+</view>

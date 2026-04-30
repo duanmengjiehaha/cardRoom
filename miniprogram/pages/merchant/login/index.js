@@ -1,29 +1,35 @@
-// pages/merchant/login/index.js
+const service = require('../../../utils/service');
+const { withLoading } = require('../../../utils/loading');
+
 Page({
   data: {
     account: '',
     password: ''
   },
 
-  login() {
+  handleInput(e) {
+    const { field } = e.currentTarget.dataset;
+    this.setData({ [field]: e.detail.value });
+  },
+
+  async login() {
     const { account, password } = this.data;
-    // 硬编码的测试账号
-    if (account === 'admin' && password === '123456') {
-      wx.showToast({
-        title: '登录成功',
-        icon: 'success'
-      });
-      // 跳转到商家工作台
-      setTimeout(() => {
-        wx.redirectTo({
-          url: '/pages/merchant/dashboard/index'
-        });
-      }, 1500);
-    } else {
-      wx.showToast({
-        title: '账号或密码错误',
-        icon: 'none'
-      });
+    if (!account.trim() || !password.trim()) {
+      wx.showToast({ title: '\u8bf7\u8f93\u5165\u8d26\u53f7\u548c\u5bc6\u7801', icon: 'none' });
+      return;
     }
+
+    const merchant = await withLoading('\u767b\u5f55\u4e2d', async () => service.loginMerchant(account.trim(), password.trim()));
+    if (!merchant) {
+      wx.showToast({ title: '\u8d26\u53f7\u3001\u5bc6\u7801\u6216\u8d26\u53f7\u72b6\u6001\u4e0d\u53ef\u7528', icon: 'none' });
+      return;
+    }
+
+    wx.showToast({ title: '\u767b\u5f55\u6210\u529f', icon: 'success' });
+    setTimeout(() => {
+      wx.reLaunch({
+        url: '/pages/merchant/home/index'
+      });
+    }, 800);
   }
 });

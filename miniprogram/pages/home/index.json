@@ -1,3 +1,8 @@
 {
-  "navigationBarTitleText": "乐闲阁棋牌订位"
+  "navigationBarTitleText": "\u9996\u9875",
+  "usingComponents": {
+    "van-button": "/miniprogram_npm/@vant/weapp/button/index",
+    "van-icon": "/miniprogram_npm/@vant/weapp/icon/index",
+    "van-tag": "/miniprogram_npm/@vant/weapp/tag/index"
+  }
 }

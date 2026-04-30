@@ -1,57 +1,197 @@
-// pages/home/index.js
+const app = getApp();
+const service = require('../../utils/service');
+const store = require('../../utils/store');
+const { withLoading } = require('../../utils/loading');
+
+function getShopBusinessStatus(shop) {
+  if (!shop || !shop.hours) {
+    return {
+      text: '\u8425\u4e1a\u4e2d',
+      active: true
+    };
+  }
+
+  const now = new Date();
+  const currentMinute = now.getHours() * 60 + now.getMinutes();
+  const [openHour, openMinute] = String(shop.hours.open || '00:00').split(':').map(Number);
+  const [closeHour, closeMinute] = String(shop.hours.close || '23:59').split(':').map(Number);
+  const open = (openHour || 0) * 60 + (openMinute || 0);
+  const close = (closeHour || 0) * 60 + (closeMinute || 0);
+
+  let active = false;
+  if (open === close) {
+    active = true;
+  } else if (open < close) {
+    active = currentMinute >= open && currentMinute < close;
+  } else {
+    active = currentMinute >= open || currentMinute < close;
+  }
+
+  return {
+    text: active ? '\u8425\u4e1a\u4e2d' : '\u4f11\u606f\u4e2d',
+    active
+  };
+}
+
 Page({
   data: {
-    shopInfo: {
-      name: '棋牌室示例店铺',
-      hours: '00:00 - 23:59',
-      address: '示例地址 123号'
+    isMerchant: false,
+    shopInfo: null,
+    roomList: [],
+    stats: {
+      totalRooms: 0,
+      idleRooms: 0,
+      bookedRooms: 0,
+      usingRooms: 0,
+      todayOrders: 0
     },
-    roomList: [
-      {
-        id: 1,
-        name: '豪华包间 101',
-        price: '¥98/小时',
-        image: 'https://core-normal.traeapi.us/api/ide/v1/text_to_image?prompt=A%20photo%20of%20a%20modern%2C%20clean%2C%20and%20well-lit%20private%20room%20for%20playing%20board%20games%20or%20card%20games.%20The%20room%20contains%20a%20sturdy%20wooden%20table%20in%20the%20center%2C%20surrounded%20by%20comfortable%20chairs.%20On%20the%20table%2C%20there%20is%20a%20deck%20of%20cards%20and%20some%20game%20pieces%20neatly%20arranged.%20The%20walls%20are%20painted%20in%20a%20neutral%20color%2C%20and%20there%20are%20some%20framed%20pictures%20of%20famous%20card%20players%20or%20game-related%20art.%20The%20lighting%20is%20bright%20but%20not%20harsh%2C%20creating%20a%20cozy%20and%20inviting%20atmosphere.&image_size=landscape_4_3'
-      },
-      {
-        id: 2,
-        name: '标准四人桌 202',
-        price: '¥68/小时',
-        image: 'https://core-normal.traeapi.us/api/ide/v1/text_to_image?prompt=A%20photo%20of%20a%20standard%20four-person%20game%20table%20in%20a%20cozy%20corner%20of%20a%20room.%20The%20table%20is%20square%20and%20made%20of%20dark%20wood%2C%20with%20a%20green%20felt%20top.%20Four%20simple%20but%20comfortable%20chairs%20are%20placed%20around%20it.%20A%20single%20deck%20of%20playing%20cards%20is%20on%20the%20table.%20The%20background%20is%20softly%20out%20of%20focus%2C%20hinting%20at%20a%20larger%20game%20room.&image_size=landscape_4_3'
-      },
-      {
-        id: 3,
-        name: '窗边景观位 303',
-        price: '¥78/小时',
-        image: 'https://core-normal.traeapi.us/api/ide/v1/text_to_image?prompt=A%20photo%20of%20a%20game%20table%20set%20next%20to%20a%20large%20window%20with%20a%20view%20of%20a%20cityscape%20at%20dusk.%20The%20table%20is%20set%20for%20a%20card%20game.%20The%20room%20is%20dimly%20lit%20with%20warm%20light%2C%20and%20the%20city%20lights%20outside%20provide%20a%20beautiful%20backdrop.&image_size=landscape_4_3'
-      }
-    ]
+    texts: {
+      bookNow: '\u7acb\u5373\u9884\u7ea6',
+      addressPrefix: '\u5e97\u94fa\u5730\u5740',
+      businessHoursPrefix: '\u8425\u4e1a\u65f6\u95f4',
+      addRoom: '\u65b0\u589e\u623f\u95f4',
+      bookingOrders: '\u9884\u7ea6\u8ba2\u5355',
+      offlineLock: '\u7ebf\u4e0b\u9501\u53f0',
+      editRoom: '\u4fee\u6539\u623f\u95f4',
+      deleteRoom: '\u5220\u9664\u623f\u95f4'
+    }
   },
-  
-  onLoad() {
-    
+
+  onLoad(options) {
+    const shopId = app.resolveShopIdFromOptions({ query: options || {} });
+    if (shopId) {
+      app.setCurrentShopId(shopId);
+    }
+  },
+
+  async onShow() {
+    await withLoading('\u52a0\u8f7d\u4e2d', async () => {
+      await service.bootstrap().catch(() => {});
+      app.refreshRole();
+      if (app.globalData.userRole === 'merchant') {
+        await this.loadMerchantHome();
+        return;
+      }
+      await this.loadUserHome();
+      if (!app.isUserAuthorized()) {
+        this.promptUserLogin();
+      }
+    });
+  },
+
+  async loadUserHome() {
+    const shopId = app.globalData.currentShopId;
+    const { shop, roomList } = await service.getUserHomeData(shopId);
+    if (shop) {
+      await service.recordShopVisit(shop.id, 'browse').catch(() => {});
+    }
+    this.setData({
+      isMerchant: false,
+      shopInfo: shop ? { ...shop, businessStatus: getShopBusinessStatus(shop) } : null,
+      roomList
+    });
+  },
+
+  async loadMerchantHome() {
+    const merchant = store.getCurrentMerchant();
+    if (!merchant) {
+      app.setRole('user');
+      wx.reLaunch({ url: '/pages/welcome/index' });
+      return;
+    }
+    app.setCurrentShopId(merchant.shopId);
+    const dashboard = await service.getMerchantDashboard(merchant.shopId);
+    this.setData({
+      isMerchant: true,
+      shopInfo: dashboard.shop ? {
+        ...dashboard.shop,
+        businessStatus: getShopBusinessStatus(dashboard.shop)
+      } : null,
+      stats: dashboard.stats,
+      roomList: dashboard.roomList
+    });
   },
 
   navigateToBooking(e) {
     const roomId = e.currentTarget.dataset.id;
-    const shopInfo = this.data.shopInfo;
-    // 保存或更新历史记录
-    const history = wx.getStorageSync('shopHistory') || [];
-    const existingIndex = history.findIndex(item => item.name === shopInfo.name);
-    const newShop = {
-      name: shopInfo.name,
-      address: shopInfo.address,
-      lastVisit: new Date().toLocaleString()
-    };
-    if (existingIndex > -1) {
-      history.splice(existingIndex, 1);
+    if (!app.isUserAuthorized()) {
+      this.promptUserLogin();
+      return;
     }
-    history.unshift(newShop);
-    wx.setStorageSync('shopHistory', history);
+    withLoading('\u52a0\u8f7d\u4e2d', async () => {
+      wx.navigateTo({
+        url: `/pages/booking/index?roomId=${roomId}`
+      });
+    });
+  },
 
-    // 跳转到预约页面
-    wx.navigateTo({
-      url: `/pages/booking/index?roomId=${roomId}`
+  navigateTo(e) {
+    withLoading('\u52a0\u8f7d\u4e2d', async () => {
+      wx.navigateTo({
+        url: e.currentTarget.dataset.url
+      });
+    });
+  },
+
+  openRoomEdit(e) {
+    withLoading('\u52a0\u8f7d\u4e2d', async () => {
+      wx.navigateTo({
+        url: `/pages/merchant/room-edit/index?roomId=${e.currentTarget.dataset.id}`
+      });
+    });
+  },
+
+  openLockPage(e) {
+    withLoading('\u52a0\u8f7d\u4e2d', async () => {
+      wx.navigateTo({
+        url: `/pages/merchant/lock-create/index?roomId=${e.currentTarget.dataset.id}`
+      });
+    });
+  },
+
+  deleteRoom(e) {
+    const roomId = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: '\u5220\u9664\u623f\u95f4',
+      content: '\u5220\u9664\u540e\u4e0d\u53ef\u6062\u590d\uff0c\u786e\u8ba4\u7ee7\u7eed\u5417\uff1f',
+      success: async ({ confirm }) => {
+        if (!confirm) {
+          return;
+        }
+        const result = await withLoading('\u52a0\u8f7d\u4e2d', () => service.removeRoom(roomId, this.data.shopInfo.id));
+        if (!result.ok) {
+          wx.showToast({ title: result.message, icon: 'none' });
+          return;
+        }
+        wx.showToast({ title: '\u623f\u95f4\u5df2\u5220\u9664', icon: 'success' });
+        await service.bootstrap().catch(() => {});
+        this.loadMerchantHome();
+      }
+    });
+  },
+
+  promptUserLogin() {
+    if (this.loginPromptVisible) {
+      return;
+    }
+    this.loginPromptVisible = true;
+    wx.showModal({
+      title: '\u672a\u767b\u5f55',
+      content: '\u767b\u5f55\u540e\u5373\u53ef\u4f7f\u7528\u9884\u7ea6\u5168\u90e8\u529f\u80fd',
+      confirmText: '\u53bb\u767b\u5f55',
+      cancelText: '\u7a0d\u540e\u518d\u8bf4',
+      success: ({ confirm }) => {
+        this.loginPromptVisible = false;
+        if (!confirm) {
+          return;
+        }
+        wx.switchTab({
+          url: '/pages/profile/index'
+        });
+      },
+      fail: () => {
+        this.loginPromptVisible = false;
+      }
     });
   }
 });

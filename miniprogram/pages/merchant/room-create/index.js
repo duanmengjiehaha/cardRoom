@@ -60,17 +60,16 @@ Page({
   },
 
   chooseImage() {
-    wx.chooseMedia({
+    wx.chooseImage({
       count: 1,
-      mediaType: ['image'],
       sizeType: ['compressed'],
       success: (res) => {
-        const file = res.tempFiles && res.tempFiles[0];
-        if (!file) {
+        const tempFilePath = res.tempFilePaths && res.tempFilePaths[0];
+        if (!tempFilePath) {
           return;
         }
         this.setData({
-          'roomForm.image': file.tempFilePath
+          'roomForm.image': tempFilePath
         });
       }
     });

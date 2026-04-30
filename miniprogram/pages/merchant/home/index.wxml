@@ -23,7 +23,7 @@
     <view class="room-list">
       <view class="room-item" wx:for="{{roomList}}" wx:key="id">
         <view class="room-tap">
-          <image class="room-thumb" src="{{item.image || '/images/default-goods-image.png'}}" mode="aspectFill"></image>
+          <image class="room-thumb" src="{{item.imageUrl || item.image || '/images/default-goods-image.png'}}" mode="aspectFill"></image>
           <view class="room-info">
             <view class="room-head">
               <view class="room-name">{{item.displayName}}</view>

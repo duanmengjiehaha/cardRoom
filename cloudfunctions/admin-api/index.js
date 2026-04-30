@@ -211,6 +211,25 @@ function buildShopQrScene(shopId) {
   return `sid=${shopId}`;
 }
 
+async function resolveTempFileURL(fileID) {
+  if (!fileID) {
+    return '';
+  }
+  const tempResult = await cloud.getTempFileURL({
+    fileList: [fileID]
+  });
+  const file = tempResult.fileList && tempResult.fileList.length
+    ? tempResult.fileList[0]
+    : null;
+  if (!file) {
+    return '';
+  }
+  if (typeof file.status !== 'undefined' && file.status !== 0) {
+    return '';
+  }
+  return file.tempFileURL || '';
+}
+
 async function ensureShopQrCode(shop) {
   try {
     let fileID = shop.qrCodeFileId || '';
@@ -279,13 +298,31 @@ async function getShopQrCodeByAdmin(data) {
     return { ok: false, message: '门店不存在' };
   }
 
-  const resolvedShop = await ensureShopQrCode(shop);
-  const tempResult = await cloud.getTempFileURL({
-    fileList: [resolvedShop.qrCodeFileId]
-  });
-  const tempFileURL = tempResult.fileList && tempResult.fileList.length
-    ? tempResult.fileList[0].tempFileURL || ''
-    : '';
+  let resolvedShop = await ensureShopQrCode(shop);
+  let tempFileURL = await resolveTempFileURL(resolvedShop.qrCodeFileId);
+
+  if (!tempFileURL) {
+    const refreshedAt = now();
+    await db.collection('shops').doc(resolvedShop._id).update({
+      data: {
+        qrCodeFileId: '',
+        qrCodeUpdatedAt: refreshedAt,
+        updatedAt: refreshedAt
+      }
+    });
+    resolvedShop = await ensureShopQrCode({
+      ...resolvedShop,
+      qrCodeFileId: ''
+    });
+    tempFileURL = await resolveTempFileURL(resolvedShop.qrCodeFileId);
+  }
+
+  if (!tempFileURL) {
+    return {
+      ok: false,
+      message: '二维码临时访问链接生成失败，请稍后重试'
+    };
+  }
 
   return {
     ok: true,

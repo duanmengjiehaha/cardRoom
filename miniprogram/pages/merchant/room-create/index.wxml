@@ -28,6 +28,7 @@
     </van-cell-group>
 
     <view class="image-field">
+      <view class="image-label">房间参考图</view>
       <view class="image-picker" bindtap="chooseImage">
         <image wx:if="{{roomForm.image && roomForm.image !== '/images/default-goods-image.png'}}" class="picker-image" src="{{roomForm.image}}" mode="aspectFill"></image>
         <view wx:else class="picker-empty">

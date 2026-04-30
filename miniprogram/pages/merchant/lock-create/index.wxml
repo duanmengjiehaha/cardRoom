@@ -7,7 +7,7 @@
 <view class="page-shell" wx:if="{{roomInfo}}">
   <view class="summary card">
     <view class="summary-head">
-      <image class="summary-image" src="{{roomInfo.image || '/images/default-goods-image.png'}}" mode="aspectFill"></image>
+      <image class="summary-image" src="{{roomInfo.imageUrl || roomInfo.image || '/images/default-goods-image.png'}}" mode="aspectFill"></image>
       <view class="summary-main">
         <view class="summary-room">{{roomInfo.name}} {{roomInfo.tableNo}}</view>
         <view class="summary-hours">{{shopInfo.hours.open}} - {{shopInfo.hours.close}}</view>

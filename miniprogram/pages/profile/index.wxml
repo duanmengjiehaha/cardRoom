@@ -19,31 +19,61 @@
   </view>
 
   <view class="menu card">
-    <van-cell
-      title="{{texts.ordersTitle}}"
-      is-link
-      icon="orders-o"
-      data-url="/pages/orders/index"
-      bind:click="navigateTo"
-    />
-    <van-cell
-      title="{{texts.historyTitle}}"
-      is-link
-      icon="clock-o"
-      data-url="/pages/history/index"
-      bind:click="navigateTo"
-    />
-    <van-cell
-      title="{{texts.switchRole}}"
-      is-link
-      icon="exchange"
-      bind:click="switchRole"
-    />
+    <view class="info-item user-menu-item" data-url="/pages/orders/index" bindtap="navigateTo">
+      <view class="info-main">
+        <view class="info-label-row">
+          <van-icon name="orders-o" size="34rpx" color="#8ea0b3" />
+          <view class="info-label user-menu-label">{{texts.ordersTitle}}</view>
+        </view>
+      </view>
+      <view class="info-arrow">></view>
+    </view>
+
+    <view class="info-item user-menu-item" data-url="/pages/history/index" bindtap="navigateTo">
+      <view class="info-main">
+        <view class="info-label-row">
+          <van-icon name="clock-o" size="34rpx" color="#8ea0b3" />
+          <view class="info-label user-menu-label">{{texts.historyTitle}}</view>
+        </view>
+      </view>
+      <view class="info-arrow">></view>
+    </view>
+
+    <view class="info-item user-menu-item" bindtap="switchRole">
+      <view class="info-main">
+        <view class="info-label-row">
+          <van-icon name="exchange" size="34rpx" color="#8ea0b3" />
+          <view class="info-label user-menu-label">{{texts.switchRole}}</view>
+        </view>
+      </view>
+      <view class="info-arrow">></view>
+    </view>
+
+    <view class="info-item user-contact-item">
+      <view class="info-main">
+        <view class="info-label-row">
+          <van-icon name="service-o" size="34rpx" color="#8ea0b3" />
+          <view class="info-label user-contact-label">{{texts.contactTitle}}</view>
+        </view>
+        <view class="info-value user-contact-value">{{texts.noticeLine2}}</view>
+      </view>
+    </view>
   </view>
 
-  <view class="notice-card user-notice-card">
-    <view class="notice-line">{{texts.noticeLine1}}</view>
-    <view class="notice-phone">{{texts.noticeLine2}}</view>
+  <view class="test-card card">
+    <view class="test-title">{{texts.testSectionTitle}}</view>
+    <view class="test-tip">{{texts.testSectionTip}}</view>
+    <view class="test-button-group">
+      <button
+        wx:for="{{testShopEntries}}"
+        wx:key="shopId"
+        class="test-shop-button"
+        data-shopid="{{item.shopId}}"
+        bindtap="switchTestShop"
+      >
+        {{item.label}}
+      </button>
+    </view>
   </view>
 </view>
 
@@ -106,6 +136,16 @@
       </view>
     </view>
 
+    <view class="info-item contact-info-item">
+      <view class="info-main">
+        <view class="info-label-row">
+          <van-icon name="service-o" size="30rpx" color="#8ea0b3" />
+          <view class="info-label">{{texts.contactTitle}}</view>
+        </view>
+        <view class="info-value">{{texts.noticeLine2}}</view>
+      </view>
+    </view>
+
     <view class="info-item last-item logout-item" bindtap="logout">
       <view class="info-main">
         <view class="info-label-row">
@@ -128,11 +168,6 @@
       </view>
     </view>
     <view class="info-arrow">></view>
-  </view>
-
-  <view class="notice-card">
-    <view class="notice-line">{{texts.noticeLine1}}</view>
-    <view class="notice-phone">{{texts.noticeLine2}}</view>
   </view>
 
   <van-popup show="{{editVisible}}" round position="bottom" custom-style="min-height: 38vh;" bind:close="closeEdit">

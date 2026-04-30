@@ -5,7 +5,7 @@
 
   <view class="room card" wx:for="{{roomList}}" wx:key="id">
     <view class="room-top">
-      <image class="room-image" src="{{item.image || '/images/default-goods-image.png'}}" mode="aspectFill"></image>
+      <image class="room-image" src="{{item.imageUrl || item.image || '/images/default-goods-image.png'}}" mode="aspectFill"></image>
       <view class="room-main">
         <view class="room-name">{{item.displayName}}</view>
         <view class="room-price">参考价：{{item.priceLabel}}</view>

@@ -12,6 +12,13 @@
   margin-top: 22rpx;
 }
 
+.image-label {
+  margin-bottom: 14rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
 .image-picker {
   width: 180rpx;
   height: 180rpx;

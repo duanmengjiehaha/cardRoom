@@ -1,7 +1,7 @@
 <view class="page-shell">
   <view class="form-card card">
     <view class="image-panel" bindtap="chooseImage">
-      <image class="preview-image" src="{{roomForm.image || '/images/default-goods-image.png'}}" mode="aspectFill"></image>
+      <image class="preview-image" src="{{roomForm.imagePreview || roomForm.image || '/images/default-goods-image.png'}}" mode="aspectFill"></image>
       <view class="image-tip">{{texts.imageTip}}</view>
     </view>
 

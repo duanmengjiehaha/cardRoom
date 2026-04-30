@@ -1,18 +1,25 @@
 const app = getApp();
-const mock = require('../../utils/mock');
 const service = require('../../utils/service');
 const store = require('../../utils/store');
 const { withLoading } = require('../../utils/loading');
 
+const DEFAULT_AVATAR = '/images/avatar.png';
+const DEFAULT_USER_PROFILE = {
+  nickName: '微信用户',
+  avatarUrl: DEFAULT_AVATAR,
+  phone: '',
+  authorized: false
+};
+
 function isDefaultNickName(nickName) {
   const value = String(nickName || '').trim();
-  return !value || value === '微信用户';
+  return !value || value === DEFAULT_USER_PROFILE.nickName;
 }
 
 Page({
   data: {
     isMerchant: false,
-    userInfo: mock.getUserProfile(),
+    userInfo: DEFAULT_USER_PROFILE,
     logged: false,
     isAuthorized: false,
     merchantInfo: null,
@@ -24,6 +31,11 @@ Page({
     hoursVisible: false,
     qrVisible: false,
     qrData: null,
+    testShopEntries: [
+      { label: '测试商家1', shopId: 'shop-a' },
+      { label: '测试商家2', shopId: 'shop-b' },
+      { label: '测试商家3', shopId: 'shop-c' }
+    ],
     hoursRange: {
       open: '09:00',
       close: '23:30'
@@ -38,6 +50,7 @@ Page({
       ordersTitle: '我的订单',
       historyTitle: '历史商家',
       switchRole: '切换到商家版',
+      contactTitle: '联系我们',
       pageTitle: '店铺信息管理',
       pageTip: '点击项目可修改信息',
       shopNameLabel: '店铺名称',
@@ -48,8 +61,9 @@ Page({
       serviceInfoValue: '200 元 / 年，免费试用 3 个月',
       qrTitle: '我的店铺二维码',
       qrDesc: '点击查看并下载',
-      noticeLine1: '商家入驻小程序请联系',
-      noticeLine2: '15766678745',
+      noticeLine2: '13092041797',
+      testSectionTitle: '测试部分',
+      testSectionTip: '点击下方按钮可切换到不同商家首页进行测试',
       merchantLogout: '退出商家登录'
     }
   },
@@ -67,7 +81,7 @@ Page({
   },
 
   loadUserProfile() {
-    const userInfo = mock.getUserProfile();
+    const userInfo = store.getUserProfile(DEFAULT_USER_PROFILE) || DEFAULT_USER_PROFILE;
     const logged = app.isUserAuthorized() && !isDefaultNickName(userInfo.nickName);
     this.setData({
       isMerchant: false,
@@ -109,7 +123,6 @@ Page({
       wx.showToast({ title: '未获取到头像', icon: 'none' });
       return;
     }
-
     const avatarProfile = app.updateUserProfile({
       avatarUrl,
       authorized: false
@@ -146,7 +159,7 @@ Page({
   },
 
   canAuthorize({ nickName, avatarUrl }) {
-    return !isDefaultNickName(nickName) && !!avatarUrl && avatarUrl !== mock.DEFAULT_AVATAR;
+    return !isDefaultNickName(nickName) && !!avatarUrl && avatarUrl !== DEFAULT_AVATAR;
   },
 
   navigateTo(e) {
@@ -171,6 +184,20 @@ Page({
           });
         });
       }
+    });
+  },
+
+  switchTestShop(e) {
+    const shopId = e.currentTarget.dataset.shopid;
+    if (!shopId) {
+      wx.showToast({ title: '商家ID缺失', icon: 'none' });
+      return;
+    }
+    app.setCurrentShopId(shopId);
+    withLoading('加载中', async () => {
+      wx.switchTab({
+        url: '/pages/home/index'
+      });
     });
   },
 

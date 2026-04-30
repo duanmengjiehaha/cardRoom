@@ -26,7 +26,8 @@ Page({
       name: '',
       tableNo: '',
       priceLabel: '',
-      image: DEFAULT_ROOM_IMAGE
+      image: DEFAULT_ROOM_IMAGE,
+      imagePreview: DEFAULT_ROOM_IMAGE
     },
     texts: {
       roomName: '房间名',
@@ -80,7 +81,8 @@ Page({
         name: room.name || '',
         tableNo: room.tableNo || '',
         priceLabel: normalizePriceLabel(room.priceLabel),
-        image: room.image || DEFAULT_ROOM_IMAGE
+        image: room.image || DEFAULT_ROOM_IMAGE,
+        imagePreview: room.imageUrl || room.image || DEFAULT_ROOM_IMAGE
       }
     });
   },
@@ -93,17 +95,17 @@ Page({
   },
 
   chooseImage() {
-    wx.chooseMedia({
+    wx.chooseImage({
       count: 1,
-      mediaType: ['image'],
       sizeType: ['compressed'],
       success: (res) => {
-        const file = res.tempFiles && res.tempFiles[0];
-        if (!file) {
+        const tempFilePath = res.tempFilePaths && res.tempFilePaths[0];
+        if (!tempFilePath) {
           return;
         }
         this.setData({
-          'roomForm.image': file.tempFilePath
+          'roomForm.image': tempFilePath,
+          'roomForm.imagePreview': tempFilePath
         });
       }
     });

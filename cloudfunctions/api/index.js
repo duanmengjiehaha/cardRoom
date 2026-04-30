@@ -1,4 +1,4 @@
-const cloud = require('wx-server-sdk');
+﻿const cloud = require('wx-server-sdk');
 const { getSeedData } = require('./seedData');
 const TIMEZONE_OFFSET_MINUTES = 8 * 60;
 
@@ -145,13 +145,39 @@ function getUserOpenId() {
 }
 
 function normalizePriceLabel(priceLabel) {
-  return String(priceLabel || '').replace(/^参考价[:：]?\s*/, '').trim();
+  return String(priceLabel || '').replace(/^\u53c2\u8003\u4ef7[:\uff1a]?\s*/, '').trim();
 }
 
 async function getAll(collectionName, where = null) {
   const query = where ? db.collection(collectionName).where(where) : db.collection(collectionName);
   const res = await query.get();
   return res.data || [];
+}
+
+async function resolveTempFileURL(fileID) {
+  if (!fileID || !String(fileID).startsWith('cloud://')) {
+    return fileID || '';
+  }
+  try {
+    const tempResult = await cloud.getTempFileURL({
+      fileList: [fileID]
+    });
+    const file = tempResult.fileList && tempResult.fileList.length ? tempResult.fileList[0] : null;
+    return (file && file.tempFileURL) || fileID;
+  } catch (error) {
+    console.error('[api] resolveTempFileURL failed:', fileID, error);
+    return fileID;
+  }
+}
+
+async function withRoomImageURL(room) {
+  if (!room) {
+    return room;
+  }
+  return {
+    ...room,
+    imageUrl: await resolveTempFileURL(room.image)
+  };
 }
 
 async function getSnapshot() {
@@ -188,13 +214,13 @@ function orderToView(order, room, shop, merchantView) {
     shopName: shop ? shop.name : '',
     roomName: room ? `${room.name} ${room.tableNo}` : '',
     statusText: order.status === 'pending'
-      ? (merchantView ? '待核销' : '待使用')
+      ? (merchantView ? '\u5f85\u6838\u9500' : '\u5f85\u4f7f\u7528')
       : order.status === 'completed'
-        ? (merchantView ? '已核销' : '已完成')
-        : '已取消',
+        ? (merchantView ? '\u5df2\u6838\u9500' : '\u5df2\u5b8c\u6210')
+        : '\u5df2\u53d6\u6d88',
     statusTag: order.status === 'pending' ? 'warning' : order.status === 'completed' ? 'success' : 'danger',
     timeRangeText: `${formatDateTime(order.startAt)} - ${formatDateTime(order.endAt).split(' ')[1]}`,
-    durationText: `${Math.max((order.endAt - order.startAt) / (30 * 60 * 1000), 1) * 0.5}小时`
+    durationText: `${Math.max((order.endAt - order.startAt) / (30 * 60 * 1000), 1) * 0.5}\u5c0f\u65f6`
   };
 }
 
@@ -289,32 +315,35 @@ async function getDashboard(shopId) {
   const rooms = snapshot.rooms.filter((item) => item.shopId === shopId);
   const shop = snapshot.shops.find((item) => item.id === shopId) || null;
   const current = now();
+  const idleStatus = '\u7a7a\u95f2';
+  const bookedStatus = '\u5df2\u6709\u9884\u7ea6';
+  const usingStatus = '\u4f7f\u7528\u4e2d';
 
-  const roomList = rooms.map((room) => {
+  const roomList = await Promise.all(rooms.map(async (room) => {
     const blocks = getActiveBlocks(snapshot, shopId, room.id);
     const hasUsingBlock = blocks.some((item) => current >= item.startAt && current < item.endAt && (item.type === 'completed' || item.type === 'lock'));
-    let status = '空闲';
+    let status = idleStatus;
     if (hasUsingBlock) {
-      status = '使用中';
+      status = usingStatus;
     } else if (blocks.length) {
-      status = '已有预约';
+      status = bookedStatus;
     }
-    return {
+    return withRoomImageURL({
       ...room,
       displayName: `${room.name} ${room.tableNo}`,
       status,
-      statusTag: status === '空闲' ? 'success' : status === '已有预约' ? 'warning' : 'danger',
+      statusTag: status === idleStatus ? 'success' : status === bookedStatus ? 'warning' : 'danger',
       canDelete: canDeleteRoom(snapshot, room.id, room.shopId)
-    };
-  });
+    });
+  }));
 
   return {
     shop,
     stats: {
       totalRooms: roomList.length,
-      idleRooms: roomList.filter((item) => item.status === '空闲').length,
-      bookedRooms: roomList.filter((item) => item.status === '已有预约').length,
-      usingRooms: roomList.filter((item) => item.status === '使用中').length,
+      idleRooms: roomList.filter((item) => item.status === idleStatus).length,
+      bookedRooms: roomList.filter((item) => item.status === bookedStatus).length,
+      usingRooms: roomList.filter((item) => item.status === usingStatus).length,
       todayOrders: snapshot.orders.filter((item) => item.shopId === shopId && sameDayLabel(item.createdAt) === sameDayLabel(now())).length
     },
     roomList
@@ -324,13 +353,13 @@ async function getDashboard(shopId) {
 async function getUserHomeData(shopId) {
   const snapshot = await normalizeCloudState();
   const shop = snapshot.shops.find((item) => item.id === shopId) || null;
-  const roomList = snapshot.rooms
+  const roomList = await Promise.all(snapshot.rooms
     .filter((item) => item.shopId === shopId)
-    .map((room) => ({
+    .map((room) => withRoomImageURL({
       ...room,
       priceLabel: normalizePriceLabel(room.priceLabel),
       displayName: `${room.name} ${room.tableNo}`
-    }));
+    })));
 
   return {
     shop,
@@ -343,7 +372,7 @@ async function getRoomContext(roomId) {
   const room = snapshot.rooms.find((item) => item.id === roomId) || null;
   const shop = room ? snapshot.shops.find((item) => item.id === room.shopId) || null : null;
   return {
-    room: room ? { ...room, priceLabel: normalizePriceLabel(room.priceLabel) } : null,
+    room: room ? await withRoomImageURL({ ...room, priceLabel: normalizePriceLabel(room.priceLabel) }) : null,
     shop
   };
 }
@@ -387,13 +416,13 @@ async function createUserBooking(data) {
   const shop = snapshot.shops.find((item) => item.id === data.shopId);
   const room = snapshot.rooms.find((item) => item.id === data.roomId);
   if (!shop || !room) {
-    return { ok: false, message: '店铺或房间不存在' };
+    return { ok: false, message: '\u5e97\u94fa\u6216\u623f\u95f4\u4e0d\u5b58\u5728' };
   }
   if (!userOpenId) {
     return { ok: false, message: 'user not found' };
   }
   if (hasOverlap(snapshot, data.shopId, data.roomId, data.startAt, data.endAt)) {
-    return { ok: false, message: '所选时段已被占用，请重新选择' };
+    return { ok: false, message: '\u6240\u9009\u65f6\u6bb5\u5df2\u88ab\u5360\u7528\uff0c\u8bf7\u91cd\u65b0\u9009\u62e9' };
   }
 
   await db.collection('orders').add({
@@ -549,7 +578,7 @@ async function resolveShopQrCode(shopId) {
     const errMsg = error && (error.errMsg || error.message) ? String(error.errMsg || error.message) : String(error || '');
     return {
       ok: false,
-      message: `二维码生成失败${errCode ? ` [${errCode}]` : ''}${errMsg ? `: ${errMsg}` : ''}`,
+      message: `\u4e8c\u7ef4\u7801\u751f\u6210\u5931\u8d25${errCode ? ` [${errCode}]` : ''}${errMsg ? `: ${errMsg}` : ''}`,
       errCode,
       errMsg
     };
@@ -717,7 +746,7 @@ exports.main = async (event) => {
   if (action === 'removeRoom') {
     const snapshot = await normalizeCloudState();
     if (!canDeleteRoom(snapshot, data.roomId, data.shopId)) {
-      return { ok: false, message: '该房间存在未结束预约或锁台，暂不能删除' };
+      return { ok: false, message: '\u8be5\u623f\u95f4\u5b58\u5728\u672a\u7ed3\u675f\u9884\u7ea6\u6216\u9501\u53f0\uff0c\u6682\u4e0d\u80fd\u5220\u9664' };
     }
     await db.collection('rooms').where({ id: data.roomId, shopId: data.shopId }).remove();
     return { ok: true };
@@ -726,7 +755,7 @@ exports.main = async (event) => {
   if (action === 'createOfflineLock') {
     const snapshot = await normalizeCloudState();
     if (hasOverlap(snapshot, data.shopId, data.roomId, data.startAt, data.endAt)) {
-      return { ok: false, message: '该时段已被预约或锁定' };
+      return { ok: false, message: '\u8be5\u65f6\u6bb5\u5df2\u88ab\u9884\u7ea6\u6216\u9501\u5b9a' };
     }
     await db.collection('locks').add({
       data: {
@@ -812,3 +841,4 @@ exports.main = async (event) => {
     message: `Unknown action: ${action || 'empty'}`
   };
 };
+

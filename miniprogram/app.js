@@ -1,14 +1,20 @@
-const mock = require('./utils/mock');
 const store = require('./utils/store');
 const cloudService = require('./utils/cloud');
 const service = require('./utils/service');
 
+const DEFAULT_AVATAR = '/images/avatar.png';
+const DEFAULT_USER_PROFILE = {
+  nickName: '微信用户',
+  avatarUrl: DEFAULT_AVATAR,
+  phone: '',
+  authorized: false
+};
+
 App({
   onLaunch(options) {
     const cloud = cloudService.initCloud();
-    mock.ensureSeedData();
     this.refreshRole();
-    this.globalData.userProfile = mock.getUserProfile();
+    this.globalData.userProfile = store.getUserProfile(DEFAULT_USER_PROFILE) || DEFAULT_USER_PROFILE;
     this.globalData.cloudEnabled = cloud.enabled;
     this.globalData.cloudEnvId = cloud.envId;
     this.applyLaunchShop(options);
@@ -61,17 +67,12 @@ App({
   },
 
   updateUserProfile(profile) {
-    this.globalData.userProfile = store.saveUserProfile(profile, {
-      nickName: '微信用户',
-      avatarUrl: mock.DEFAULT_AVATAR,
-      phone: '',
-      authorized: false
-    });
+    this.globalData.userProfile = store.saveUserProfile(profile, DEFAULT_USER_PROFILE);
     return this.globalData.userProfile;
   },
 
   isUserAuthorized() {
-    const profile = this.globalData.userProfile || mock.getUserProfile();
+    const profile = this.globalData.userProfile || store.getUserProfile(DEFAULT_USER_PROFILE);
     return !!(profile && profile.authorized);
   },
 

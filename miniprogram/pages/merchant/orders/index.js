@@ -1,4 +1,4 @@
-const mock = require('../../../utils/mock');
+const store = require('../../../utils/store');
 const service = require('../../../utils/service');
 const { withLoading } = require('../../../utils/loading');
 
@@ -25,21 +25,24 @@ Page({
   },
 
   async onShow() {
-    await withLoading('\u52a0\u8f7d\u4e2d', async () => {
+    await withLoading('加载中', async () => {
       await service.bootstrap().catch(() => {});
-      const merchant = mock.getCurrentMerchant();
+      const merchant = store.getCurrentMerchant();
       if (!merchant) {
         wx.redirectTo({ url: '/pages/merchant/login/index' });
         return;
       }
-
-      const allOrders = await service.listMerchantOrders(merchant.shopId);
-      this.setData({
-        allOrders,
-        shopId: merchant.shopId
-      });
-      this.filterOrders();
+      await this.loadOrders(merchant.shopId);
     });
+  },
+
+  async loadOrders(shopId) {
+    const allOrders = await service.listMerchantOrders(shopId);
+    this.setData({
+      allOrders,
+      shopId
+    });
+    this.filterOrders();
   },
 
   handleTabChange(e) {
@@ -81,13 +84,11 @@ Page({
         }
         const result = await withLoading('核销中', () => service.verifyOrder(orderId, this.data.shopId));
         if (!result.ok) {
-          wx.showToast({ title: result.message, icon: 'none' });
+          wx.showToast({ title: result.message || '核销失败', icon: 'none' });
           return;
         }
         wx.showToast({ title: '核销成功', icon: 'success' });
-        const allOrders = await withLoading('刷新中', () => service.listMerchantOrders(this.data.shopId));
-        this.setData({ allOrders });
-        this.filterOrders();
+        await withLoading('刷新中', () => this.loadOrders(this.data.shopId));
       }
     });
   }
